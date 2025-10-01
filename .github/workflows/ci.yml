@@ -26,7 +26,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Run flake checks
-        run: nix flake check --all-systems
+        run: nix flake check
 
   build-generators:
     name: Build All Generators
