@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    name: Nix Flake Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v13
+        with:
+          name: compliance-as-code
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Run flake checks
+        run: nix flake check --all-systems
+
+  build-generators:
+    name: Build All Generators
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [java, typescript, python, go]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v13
+        with:
+          name: compliance-as-code
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Build all ${{ matrix.language }} generators
+        run: nix build .#all-${{ matrix.language }}
+
+      - name: List generated files
+        run: ls -lah result/
+
+  build-examples:
+    name: Build Examples
+    runs-on: ubuntu-latest
+    needs: build-generators
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v13
+        with:
+          name: compliance-as-code
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Build all examples
+        run: |
+          cd examples
+          # Will implement when examples are ready
+          echo "Examples build coming soon"
+
+  format-check:
+    name: Check Nix Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Check Nix formatting
+        run: nix run nixpkgs#nixpkgs-fmt -- --check .

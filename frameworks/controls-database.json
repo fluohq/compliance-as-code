@@ -1,0 +1,762 @@
+{
+  "frameworks": {
+    "SOC2": {
+      "name": "SOC 2 Type II",
+      "version": "2017 TSC (2022 Revision)",
+      "organization": "AICPA",
+      "description": "Service Organization Control 2 - Trust Service Criteria",
+      "categories": {
+        "CC1": {
+          "name": "Control Environment",
+          "controls": {
+            "CC1.1": {
+              "title": "Demonstrates Commitment to Integrity and Ethical Values",
+              "description": "The entity demonstrates a commitment to integrity and ethical values.",
+              "type": "governance"
+            },
+            "CC1.2": {
+              "title": "Exercises Oversight Responsibility",
+              "description": "The board of directors demonstrates independence from management and exercises oversight of the development and performance of internal control.",
+              "type": "governance"
+            },
+            "CC1.3": {
+              "title": "Establishes Structure, Authority, and Responsibility",
+              "description": "Management establishes, with board oversight, structures, reporting lines, and appropriate authorities and responsibilities.",
+              "type": "governance"
+            },
+            "CC1.4": {
+              "title": "Demonstrates Commitment to Competence",
+              "description": "The entity demonstrates a commitment to attract, develop, and retain competent individuals.",
+              "type": "governance"
+            },
+            "CC1.5": {
+              "title": "Enforces Accountability",
+              "description": "The entity holds individuals accountable for their internal control responsibilities.",
+              "type": "governance"
+            }
+          }
+        },
+        "CC2": {
+          "name": "Communication and Information",
+          "controls": {
+            "CC2.1": {
+              "title": "Obtains or Generates and Uses Relevant Information",
+              "description": "The entity obtains or generates and uses relevant, quality information to support the functioning of internal control.",
+              "type": "operational"
+            },
+            "CC2.2": {
+              "title": "Internal Communication",
+              "description": "The entity internally communicates information, including objectives and responsibilities for internal control.",
+              "type": "operational"
+            },
+            "CC2.3": {
+              "title": "External Communication",
+              "description": "The entity communicates with external parties regarding matters affecting the functioning of internal control.",
+              "type": "operational"
+            }
+          }
+        },
+        "CC3": {
+          "name": "Risk Assessment",
+          "controls": {
+            "CC3.1": {
+              "title": "Specifies Suitable Objectives",
+              "description": "The entity specifies objectives with sufficient clarity to enable the identification and assessment of risks relating to objectives.",
+              "type": "risk"
+            },
+            "CC3.2": {
+              "title": "Identifies and Analyzes Risks",
+              "description": "The entity identifies risks to the achievement of its objectives and analyzes risks as a basis for determining how the risks should be managed.",
+              "type": "risk"
+            },
+            "CC3.3": {
+              "title": "Assesses Fraud Risk",
+              "description": "The entity considers the potential for fraud in assessing risks to the achievement of objectives.",
+              "type": "risk"
+            },
+            "CC3.4": {
+              "title": "Identifies and Assesses Changes",
+              "description": "The entity identifies and assesses changes that could significantly impact the system of internal control.",
+              "type": "risk"
+            }
+          }
+        },
+        "CC4": {
+          "name": "Monitoring Activities",
+          "controls": {
+            "CC4.1": {
+              "title": "Selects, Develops, and Performs Ongoing and/or Separate Evaluations",
+              "description": "The entity selects, develops, and performs ongoing and/or separate evaluations to ascertain whether the components of internal control are present and functioning.",
+              "type": "monitoring"
+            },
+            "CC4.2": {
+              "title": "Evaluates and Communicates Deficiencies",
+              "description": "The entity evaluates and communicates internal control deficiencies in a timely manner to those parties responsible for taking corrective action.",
+              "type": "monitoring"
+            }
+          }
+        },
+        "CC5": {
+          "name": "Control Activities",
+          "controls": {
+            "CC5.1": {
+              "title": "Selects and Develops Control Activities",
+              "description": "The entity selects and develops control activities that contribute to the mitigation of risks to the achievement of objectives to acceptable levels.",
+              "type": "technical"
+            },
+            "CC5.2": {
+              "title": "Selects and Develops General Controls Over Technology",
+              "description": "The entity also selects and develops general control activities over technology to support the achievement of objectives.",
+              "type": "technical"
+            },
+            "CC5.3": {
+              "title": "Deploys Through Policies and Procedures",
+              "description": "The entity deploys control activities through policies that establish what is expected and in procedures that put policies into action.",
+              "type": "technical"
+            }
+          }
+        },
+        "CC6": {
+          "name": "Logical and Physical Access Controls",
+          "controls": {
+            "CC6.1": {
+              "title": "Logical Access Controls",
+              "description": "The entity implements logical access security software, infrastructure, and architectures over protected information assets.",
+              "type": "access",
+              "critical": true
+            },
+            "CC6.2": {
+              "title": "User Access Provisioning",
+              "description": "Prior to issuing system credentials and granting system access, the entity registers and authorizes new internal and external users.",
+              "type": "access",
+              "critical": true
+            },
+            "CC6.3": {
+              "title": "Data Isolation",
+              "description": "The entity prevents or detects and acts upon the introduction of unauthorized or malicious software.",
+              "type": "access"
+            },
+            "CC6.4": {
+              "title": "Physical Access to Facilities",
+              "description": "The entity restricts physical access to facilities and protected information assets.",
+              "type": "physical"
+            },
+            "CC6.5": {
+              "title": "Disposal of Data and Equipment",
+              "description": "The entity disposes of data and equipment in accordance with its data retention and disposal policies.",
+              "type": "operational"
+            },
+            "CC6.6": {
+              "title": "Logical Access Management",
+              "description": "The entity implements logical access security measures to protect against threats from sources outside its system boundaries.",
+              "type": "access"
+            },
+            "CC6.7": {
+              "title": "Encryption",
+              "description": "The entity uses encryption and other measures to protect data at rest and in transit.",
+              "type": "encryption",
+              "critical": true
+            },
+            "CC6.8": {
+              "title": "Prevention of Malicious Software",
+              "description": "The entity implements controls to prevent or detect and act upon the introduction of unauthorized or malicious software.",
+              "type": "security"
+            }
+          }
+        },
+        "CC7": {
+          "name": "System Operations",
+          "controls": {
+            "CC7.1": {
+              "title": "Monitoring System Components",
+              "description": "To meet its objectives, the entity uses detection and monitoring procedures to identify anomalies.",
+              "type": "monitoring",
+              "critical": true
+            },
+            "CC7.2": {
+              "title": "Monitoring System Performance",
+              "description": "The entity monitors system components and the operation of those components for anomalies.",
+              "type": "monitoring"
+            },
+            "CC7.3": {
+              "title": "Backup and Recovery",
+              "description": "The entity evaluates security events to determine whether they could or have resulted in a failure of the entity to meet its objectives.",
+              "type": "recovery"
+            },
+            "CC7.4": {
+              "title": "Incident Response",
+              "description": "The entity responds to identified security incidents by executing a defined incident response program.",
+              "type": "incident"
+            },
+            "CC7.5": {
+              "title": "Processing Integrity",
+              "description": "The entity identifies, develops, and implements activities to recover from identified security incidents.",
+              "type": "recovery"
+            }
+          }
+        },
+        "CC8": {
+          "name": "Change Management",
+          "controls": {
+            "CC8.1": {
+              "title": "Change Management Process",
+              "description": "The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures.",
+              "type": "change",
+              "critical": true
+            }
+          }
+        },
+        "CC9": {
+          "name": "Risk Mitigation",
+          "controls": {
+            "CC9.1": {
+              "title": "Vendor Risk Management",
+              "description": "The entity identifies, selects, and develops risk mitigation activities for risks arising from potential business disruptions.",
+              "type": "vendor"
+            },
+            "CC9.2": {
+              "title": "Business Continuity",
+              "description": "The entity assesses and manages risks associated with vendors and business partners.",
+              "type": "continuity"
+            }
+          }
+        }
+      }
+    },
+    "HIPAA": {
+      "name": "Health Insurance Portability and Accountability Act",
+      "version": "Security Rule (45 CFR Part 164)",
+      "organization": "HHS",
+      "description": "HIPAA Security Rule for protecting electronic Protected Health Information (ePHI)",
+      "categories": {
+        "Administrative": {
+          "name": "Administrative Safeguards",
+          "controls": {
+            "164.308(a)(1)": {
+              "title": "Security Management Process",
+              "description": "Implement policies and procedures to prevent, detect, contain, and correct security violations.",
+              "subsections": {
+                "164.308(a)(1)(ii)(A)": "Risk Analysis",
+                "164.308(a)(1)(ii)(B)": "Risk Management",
+                "164.308(a)(1)(ii)(C)": "Sanction Policy",
+                "164.308(a)(1)(ii)(D)": "Information System Activity Review"
+              },
+              "type": "required"
+            },
+            "164.308(a)(2)": {
+              "title": "Assigned Security Responsibility",
+              "description": "Identify the security official responsible for developing and implementing security policies and procedures.",
+              "type": "required"
+            },
+            "164.308(a)(3)": {
+              "title": "Workforce Security",
+              "description": "Implement policies and procedures to ensure workforce members have appropriate access to ePHI.",
+              "subsections": {
+                "164.308(a)(3)(ii)(A)": "Authorization and/or Supervision",
+                "164.308(a)(3)(ii)(B)": "Workforce Clearance Procedure",
+                "164.308(a)(3)(ii)(C)": "Termination Procedures"
+              },
+              "type": "required"
+            },
+            "164.308(a)(4)": {
+              "title": "Information Access Management",
+              "description": "Implement policies and procedures for authorizing access to ePHI.",
+              "subsections": {
+                "164.308(a)(4)(ii)(A)": "Access Authorization",
+                "164.308(a)(4)(ii)(B)": "Access Establishment and Modification",
+                "164.308(a)(4)(ii)(C)": "Isolating Healthcare Clearinghouse Functions"
+              },
+              "type": "required"
+            },
+            "164.308(a)(5)": {
+              "title": "Security Awareness and Training",
+              "description": "Implement security awareness and training program for all workforce members.",
+              "subsections": {
+                "164.308(a)(5)(ii)(A)": "Periodic Security Updates",
+                "164.308(a)(5)(ii)(B)": "Protection from Malicious Software",
+                "164.308(a)(5)(ii)(C)": "Log-in Monitoring",
+                "164.308(a)(5)(ii)(D)": "Password Management"
+              },
+              "type": "required"
+            },
+            "164.308(a)(6)": {
+              "title": "Security Incident Procedures",
+              "description": "Implement policies and procedures to address security incidents.",
+              "subsections": {
+                "164.308(a)(6)(ii)": "Response and Reporting"
+              },
+              "type": "required"
+            },
+            "164.308(a)(7)": {
+              "title": "Contingency Plan",
+              "description": "Establish policies and procedures for responding to emergencies that damage ePHI systems.",
+              "subsections": {
+                "164.308(a)(7)(ii)(A)": "Data Backup Plan",
+                "164.308(a)(7)(ii)(B)": "Disaster Recovery Plan",
+                "164.308(a)(7)(ii)(C)": "Emergency Mode Operation Plan",
+                "164.308(a)(7)(ii)(D)": "Testing and Revision Procedures",
+                "164.308(a)(7)(ii)(E)": "Applications and Data Criticality Analysis"
+              },
+              "type": "required"
+            },
+            "164.308(a)(8)": {
+              "title": "Evaluation",
+              "description": "Perform periodic technical and nontechnical evaluations of security measures.",
+              "type": "required"
+            },
+            "164.308(b)": {
+              "title": "Business Associate Contracts",
+              "description": "Obtain satisfactory assurances that business associates will appropriately safeguard ePHI.",
+              "type": "required"
+            }
+          }
+        },
+        "Physical": {
+          "name": "Physical Safeguards",
+          "controls": {
+            "164.310(a)": {
+              "title": "Facility Access Controls",
+              "description": "Implement policies and procedures to limit physical access to electronic information systems.",
+              "subsections": {
+                "164.310(a)(2)(i)": "Contingency Operations",
+                "164.310(a)(2)(ii)": "Facility Security Plan",
+                "164.310(a)(2)(iii)": "Access Control and Validation Procedures",
+                "164.310(a)(2)(iv)": "Maintenance Records"
+              },
+              "type": "required"
+            },
+            "164.310(b)": {
+              "title": "Workstation Use",
+              "description": "Implement policies and procedures that specify proper functions and physical attributes of workstations.",
+              "type": "required"
+            },
+            "164.310(c)": {
+              "title": "Workstation Security",
+              "description": "Implement physical safeguards for all workstations that access ePHI.",
+              "type": "required"
+            },
+            "164.310(d)": {
+              "title": "Device and Media Controls",
+              "description": "Implement policies and procedures for receipt and removal of hardware and electronic media containing ePHI.",
+              "subsections": {
+                "164.310(d)(2)(i)": "Disposal",
+                "164.310(d)(2)(ii)": "Media Re-use",
+                "164.310(d)(2)(iii)": "Accountability",
+                "164.310(d)(2)(iv)": "Data Backup and Storage"
+              },
+              "type": "required"
+            }
+          }
+        },
+        "Technical": {
+          "name": "Technical Safeguards",
+          "controls": {
+            "164.312(a)": {
+              "title": "Access Control",
+              "description": "Implement technical policies and procedures to allow access only to authorized persons.",
+              "subsections": {
+                "164.312(a)(2)(i)": "Unique User Identification",
+                "164.312(a)(2)(ii)": "Automatic Logoff",
+                "164.312(a)(2)(iii)": "Encryption and Decryption",
+                "164.312(a)(2)(iv)": "Mechanism to Authenticate ePHI"
+              },
+              "type": "required",
+              "critical": true
+            },
+            "164.312(b)": {
+              "title": "Audit Controls",
+              "description": "Implement hardware, software, and procedural mechanisms to record and examine access and activity in information systems containing ePHI.",
+              "type": "required",
+              "critical": true
+            },
+            "164.312(c)": {
+              "title": "Integrity",
+              "description": "Implement policies and procedures to protect ePHI from improper alteration or destruction.",
+              "subsections": {
+                "164.312(c)(2)": "Mechanism to Authenticate ePHI"
+              },
+              "type": "required"
+            },
+            "164.312(d)": {
+              "title": "Transmission Security",
+              "description": "Implement technical security measures to guard against unauthorized access to ePHI transmitted over electronic networks.",
+              "subsections": {
+                "164.312(e)(2)(i)": "Integrity Controls",
+                "164.312(e)(2)(ii)": "Encryption"
+              },
+              "type": "required",
+              "critical": true
+            }
+          }
+        }
+      }
+    },
+    "FedRAMP": {
+      "name": "Federal Risk and Authorization Management Program",
+      "version": "Rev 5 (Based on NIST 800-53 Rev 5)",
+      "organization": "GSA",
+      "description": "Standardized approach to security assessment, authorization, and continuous monitoring for cloud products and services",
+      "impact_levels": {
+        "Low": {
+          "description": "Low impact level for public data",
+          "control_count": 150,
+          "control_families": [
+            "AC", "AU", "CA", "CM", "CP", "IA", "IR", "MA", "MP", "PE", "PL", "PS", "RA", "SA", "SC", "SI", "SR"
+          ]
+        },
+        "Moderate": {
+          "description": "Moderate impact level for controlled unclassified information",
+          "control_count": 304,
+          "control_families": [
+            "AC", "AU", "CA", "CM", "CP", "IA", "IR", "MA", "MP", "PE", "PL", "PM", "PS", "RA", "SA", "SC", "SI", "SR"
+          ]
+        },
+        "High": {
+          "description": "High impact level for sensitive government data",
+          "control_count": 392,
+          "control_families": [
+            "AC", "AU", "CA", "CM", "CP", "IA", "IR", "MA", "MP", "PE", "PL", "PM", "PS", "PT", "RA", "SA", "SC", "SI", "SR"
+          ]
+        }
+      },
+      "control_families": {
+        "AC": {
+          "name": "Access Control",
+          "controls": {
+            "AC-1": "Access Control Policy and Procedures",
+            "AC-2": "Account Management",
+            "AC-3": "Access Enforcement",
+            "AC-4": "Information Flow Enforcement",
+            "AC-5": "Separation of Duties",
+            "AC-6": "Least Privilege",
+            "AC-7": "Unsuccessful Logon Attempts",
+            "AC-8": "System Use Notification",
+            "AC-11": "Device Lock",
+            "AC-12": "Session Termination",
+            "AC-14": "Permitted Actions without Identification or Authentication",
+            "AC-17": "Remote Access",
+            "AC-18": "Wireless Access",
+            "AC-19": "Access Control for Mobile Devices",
+            "AC-20": "Use of External Systems",
+            "AC-21": "Information Sharing",
+            "AC-22": "Publicly Accessible Content"
+          }
+        },
+        "AU": {
+          "name": "Audit and Accountability",
+          "controls": {
+            "AU-1": "Audit and Accountability Policy and Procedures",
+            "AU-2": "Event Logging",
+            "AU-3": "Content of Audit Records",
+            "AU-4": "Audit Log Storage Capacity",
+            "AU-5": "Response to Audit Logging Process Failures",
+            "AU-6": "Audit Record Review, Analysis, and Reporting",
+            "AU-7": "Audit Record Reduction and Report Generation",
+            "AU-8": "Time Stamps",
+            "AU-9": "Protection of Audit Information",
+            "AU-10": "Non-repudiation",
+            "AU-11": "Audit Record Retention",
+            "AU-12": "Audit Record Generation"
+          }
+        },
+        "SC": {
+          "name": "System and Communications Protection",
+          "controls": {
+            "SC-1": "System and Communications Protection Policy and Procedures",
+            "SC-2": "Separation of System and User Functionality",
+            "SC-4": "Information in Shared System Resources",
+            "SC-5": "Denial-of-service Protection",
+            "SC-7": "Boundary Protection",
+            "SC-8": "Transmission Confidentiality and Integrity",
+            "SC-12": "Cryptographic Key Establishment and Management",
+            "SC-13": "Cryptographic Protection",
+            "SC-15": "Collaborative Computing Devices and Applications",
+            "SC-17": "Public Key Infrastructure Certificates",
+            "SC-18": "Mobile Code",
+            "SC-20": "Secure Name/Address Resolution Service (Authoritative Source)",
+            "SC-21": "Secure Name/Address Resolution Service (Recursive or Caching Resolver)",
+            "SC-22": "Architecture and Provisioning for Name/Address Resolution Service",
+            "SC-23": "Session Authenticity",
+            "SC-28": "Protection of Information at Rest",
+            "SC-39": "Operations Security"
+          }
+        }
+      }
+    },
+    "ISO27001": {
+      "name": "ISO/IEC 27001:2022",
+      "version": "2022",
+      "organization": "ISO/IEC",
+      "description": "International standard for information security management systems",
+      "annexA_controls": {
+        "A.5": {
+          "name": "Organizational Controls",
+          "controls": {
+            "A.5.1": "Policies for information security",
+            "A.5.2": "Information security roles and responsibilities",
+            "A.5.3": "Segregation of duties",
+            "A.5.4": "Management responsibilities",
+            "A.5.5": "Contact with authorities",
+            "A.5.6": "Contact with special interest groups",
+            "A.5.7": "Threat intelligence",
+            "A.5.8": "Information security in project management",
+            "A.5.9": "Inventory of information and other associated assets",
+            "A.5.10": "Acceptable use of information and other associated assets",
+            "A.5.11": "Return of assets",
+            "A.5.12": "Classification of information",
+            "A.5.13": "Labelling of information",
+            "A.5.14": "Information transfer",
+            "A.5.15": "Access control",
+            "A.5.16": "Identity management",
+            "A.5.17": "Authentication information",
+            "A.5.18": "Access rights",
+            "A.5.19": "Information security in supplier relationships",
+            "A.5.20": "Addressing information security within supplier agreements",
+            "A.5.21": "Managing information security in the ICT supply chain",
+            "A.5.22": "Monitoring, review and change management of supplier services",
+            "A.5.23": "Information security for use of cloud services",
+            "A.5.24": "Information security incident management planning and preparation",
+            "A.5.25": "Assessment and decision on information security events",
+            "A.5.26": "Response to information security incidents",
+            "A.5.27": "Learning from information security incidents",
+            "A.5.28": "Collection of evidence",
+            "A.5.29": "Information security during disruption",
+            "A.5.30": "ICT readiness for business continuity",
+            "A.5.31": "Legal, statutory, regulatory and contractual requirements",
+            "A.5.32": "Intellectual property rights",
+            "A.5.33": "Protection of records",
+            "A.5.34": "Privacy and protection of PII",
+            "A.5.35": "Independent review of information security",
+            "A.5.36": "Compliance with policies, rules and standards for information security",
+            "A.5.37": "Documented operating procedures"
+          }
+        },
+        "A.6": {
+          "name": "People Controls",
+          "controls": {
+            "A.6.1": "Screening",
+            "A.6.2": "Terms and conditions of employment",
+            "A.6.3": "Information security awareness, education and training",
+            "A.6.4": "Disciplinary process",
+            "A.6.5": "Responsibilities after termination or change of employment",
+            "A.6.6": "Confidentiality or non-disclosure agreements",
+            "A.6.7": "Remote working",
+            "A.6.8": "Information security event reporting"
+          }
+        },
+        "A.7": {
+          "name": "Physical Controls",
+          "controls": {
+            "A.7.1": "Physical security perimeters",
+            "A.7.2": "Physical entry",
+            "A.7.3": "Securing offices, rooms and facilities",
+            "A.7.4": "Physical security monitoring",
+            "A.7.5": "Protecting against physical and environmental threats",
+            "A.7.6": "Working in secure areas",
+            "A.7.7": "Clear desk and clear screen",
+            "A.7.8": "Equipment siting and protection",
+            "A.7.9": "Security of assets off-premises",
+            "A.7.10": "Storage media",
+            "A.7.11": "Supporting utilities",
+            "A.7.12": "Cabling security",
+            "A.7.13": "Equipment maintenance",
+            "A.7.14": "Secure disposal or re-use of equipment"
+          }
+        },
+        "A.8": {
+          "name": "Technological Controls",
+          "controls": {
+            "A.8.1": "User endpoint devices",
+            "A.8.2": "Privileged access rights",
+            "A.8.3": "Information access restriction",
+            "A.8.4": "Access to source code",
+            "A.8.5": "Secure authentication",
+            "A.8.6": "Capacity management",
+            "A.8.7": "Protection against malware",
+            "A.8.8": "Management of technical vulnerabilities",
+            "A.8.9": "Configuration management",
+            "A.8.10": "Information deletion",
+            "A.8.11": "Data masking",
+            "A.8.12": "Data leakage prevention",
+            "A.8.13": "Information backup",
+            "A.8.14": "Redundancy of information processing facilities",
+            "A.8.15": "Logging",
+            "A.8.16": "Monitoring activities",
+            "A.8.17": "Clock synchronization",
+            "A.8.18": "Use of privileged utility programs",
+            "A.8.19": "Installation of software on operational systems",
+            "A.8.20": "Networks security",
+            "A.8.21": "Security of network services",
+            "A.8.22": "Segregation of networks",
+            "A.8.23": "Web filtering",
+            "A.8.24": "Use of cryptography",
+            "A.8.25": "Secure development life cycle",
+            "A.8.26": "Application security requirements",
+            "A.8.27": "Secure system architecture and engineering principles",
+            "A.8.28": "Secure coding",
+            "A.8.29": "Security testing in development and acceptance",
+            "A.8.30": "Outsourced development",
+            "A.8.31": "Separation of development, test and production environments",
+            "A.8.32": "Change management",
+            "A.8.33": "Test information",
+            "A.8.34": "Protection of information systems during audit testing"
+          }
+        }
+      }
+    },
+    "PCI-DSS": {
+      "name": "Payment Card Industry Data Security Standard",
+      "version": "4.0",
+      "organization": "PCI Security Standards Council",
+      "description": "Security standard for organizations that handle credit card data",
+      "requirements": {
+        "1": {
+          "title": "Build and Maintain a Secure Network",
+          "controls": {
+            "1.1": "Install and maintain network security controls",
+            "1.2": "Apply secure configurations to all system components",
+            "1.3": "Protect stored cardholder data",
+            "1.4": "Encrypt transmission of cardholder data across public networks",
+            "1.5": "Protect all systems against malware"
+          }
+        },
+        "2": {
+          "title": "Protect Cardholder Data",
+          "controls": {
+            "2.1": "Always change vendor default passwords",
+            "2.2": "Develop configuration standards for all system components"
+          }
+        },
+        "3": {
+          "title": "Maintain a Vulnerability Management Program",
+          "controls": {
+            "3.1": "Protect stored cardholder data",
+            "3.2": "Do not store sensitive authentication data after authorization",
+            "3.3": "Mask PAN when displayed",
+            "3.4": "Render PAN unreadable wherever stored",
+            "3.5": "Protect cryptographic keys",
+            "3.6": "Document and implement key management processes",
+            "3.7": "Ensure cryptographic key storage is secure"
+          }
+        },
+        "4": {
+          "title": "Implement Strong Access Control Measures",
+          "controls": {
+            "4.1": "Encrypt transmission of cardholder data across open networks",
+            "4.2": "Never send unprotected PANs via messaging technologies",
+            "4.3": "Ensure wireless networks are properly secured"
+          }
+        },
+        "7": {
+          "title": "Restrict Access to Cardholder Data",
+          "controls": {
+            "7.1": "Limit access to system components by business need-to-know",
+            "7.2": "Establish an access control system",
+            "7.3": "Ensure each person has a unique ID"
+          }
+        },
+        "8": {
+          "title": "Identify and Authenticate Access",
+          "controls": {
+            "8.1": "Assign unique IDs to each person with computer access",
+            "8.2": "Secure user authentication management",
+            "8.3": "Secure all individual non-console administrative access",
+            "8.4": "Render all authentication credentials unreadable during storage and transmission",
+            "8.5": "Prevent reuse of authentication credentials"
+          }
+        },
+        "9": {
+          "title": "Restrict Physical Access",
+          "controls": {
+            "9.1": "Use appropriate facility controls to limit physical access",
+            "9.2": "Develop procedures to distinguish personnel",
+            "9.3": "Control physical access to sensitive areas",
+            "9.4": "Implement procedures to identify and authorize visitors"
+          }
+        },
+        "10": {
+          "title": "Track and Monitor All Access",
+          "controls": {
+            "10.1": "Implement audit trails",
+            "10.2": "Review audit trails daily",
+            "10.3": "Record audit trail entries for all system components",
+            "10.4": "Synchronize all critical system clocks",
+            "10.5": "Secure audit trails",
+            "10.6": "Review logs for all system components",
+            "10.7": "Retain audit trail history"
+          }
+        },
+        "11": {
+          "title": "Regularly Test Security Systems",
+          "controls": {
+            "11.1": "Test security controls regularly",
+            "11.2": "Run vulnerability scans quarterly",
+            "11.3": "Perform penetration testing annually",
+            "11.4": "Use intrusion detection/prevention systems",
+            "11.5": "Deploy change detection mechanisms",
+            "11.6": "Ensure security policies are documented and followed"
+          }
+        },
+        "12": {
+          "title": "Maintain an Information Security Policy",
+          "controls": {
+            "12.1": "Establish and disseminate security policy",
+            "12.2": "Implement a risk assessment process",
+            "12.3": "Develop usage policies for critical technologies",
+            "12.4": "Ensure security responsibilities are clearly defined",
+            "12.5": "Assign security responsibilities to specific individuals",
+            "12.6": "Implement security awareness program",
+            "12.7": "Screen personnel prior to hire",
+            "12.8": "Maintain policies for service providers",
+            "12.9": "Additional requirements for service providers",
+            "12.10": "Implement incident response plan"
+          }
+        }
+      }
+    }
+  },
+  "control_mappings": {
+    "access_control": {
+      "SOC2": ["CC6.1", "CC6.2", "CC6.3"],
+      "HIPAA": ["164.312(a)", "164.308(a)(3)", "164.308(a)(4)"],
+      "FedRAMP": ["AC-2", "AC-3", "AC-6"],
+      "ISO27001": ["A.5.15", "A.5.16", "A.5.17", "A.5.18"],
+      "PCI-DSS": ["7.1", "7.2", "8.1", "8.2"]
+    },
+    "encryption": {
+      "SOC2": ["CC6.7"],
+      "HIPAA": ["164.312(a)(2)(iv)", "164.312(e)(2)(ii)"],
+      "FedRAMP": ["SC-8", "SC-13", "SC-28"],
+      "ISO27001": ["A.8.24"],
+      "PCI-DSS": ["3.4", "4.1"]
+    },
+    "audit_logging": {
+      "SOC2": ["CC4.1", "CC7.1"],
+      "HIPAA": ["164.312(b)", "164.308(a)(1)(ii)(D)"],
+      "FedRAMP": ["AU-2", "AU-3", "AU-6"],
+      "ISO27001": ["A.8.15", "A.8.16"],
+      "PCI-DSS": ["10.1", "10.2", "10.3"]
+    },
+    "incident_response": {
+      "SOC2": ["CC7.4"],
+      "HIPAA": ["164.308(a)(6)"],
+      "FedRAMP": ["IR-4", "IR-5", "IR-6"],
+      "ISO27001": ["A.5.25", "A.5.26", "A.5.27"],
+      "PCI-DSS": ["12.10"]
+    },
+    "change_management": {
+      "SOC2": ["CC8.1"],
+      "HIPAA": ["164.308(a)(1)(ii)(B)"],
+      "FedRAMP": ["CM-2", "CM-3", "CM-4"],
+      "ISO27001": ["A.8.32"],
+      "PCI-DSS": ["6.4", "11.5"]
+    },
+    "risk_assessment": {
+      "SOC2": ["CC3.1", "CC3.2"],
+      "HIPAA": ["164.308(a)(1)(ii)(A)"],
+      "FedRAMP": ["RA-3", "RA-5"],
+      "ISO27001": ["A.5.7"],
+      "PCI-DSS": ["12.2"]
+    }
+  }
+}
