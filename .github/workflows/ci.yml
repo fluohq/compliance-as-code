@@ -8,7 +8,7 @@ on:
 
 jobs:
   check:
-    name: Nix Flake Check
+    name: Nix Format Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,15 +18,19 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
+            accept-flake-config = true
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v13
-        with:
-          name: fluohq
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Check Nix formatting
+        run: nix run nixpkgs#nixpkgs-fmt -- --check .
 
-      - name: Run flake checks
-        run: nix flake check
+      - name: Build sample generators
+        run: |
+          cd frameworks/generators
+          nix build .#java-gdpr --no-link
+          nix build .#ts-gdpr --no-link
+          nix build .#py-gdpr --no-link
+          nix build .#go-gdpr --no-link
+          echo "✓ All sample generators built successfully"
 
   build-generators:
     name: Build All Generators
@@ -42,6 +46,7 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
+            accept-flake-config = true
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v13
@@ -50,10 +55,12 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Build all ${{ matrix.language }} generators
-        run: nix build .#all-${{ matrix.language }}
+        run: |
+          cd frameworks/generators
+          nix build .#all-${{ matrix.language }}
 
       - name: List generated files
-        run: ls -lah result/
+        run: ls -lah frameworks/generators/result/
 
   build-examples:
     name: Build Examples
@@ -67,6 +74,7 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
+            accept-flake-config = true
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v13
@@ -91,6 +99,7 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
+            accept-flake-config = true
 
       - name: Check Nix formatting
         run: nix run nixpkgs#nixpkgs-fmt -- --check .

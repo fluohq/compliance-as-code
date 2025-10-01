@@ -73,6 +73,7 @@
               nixpkgs-fmt
               nix-tree
               jq
+              act
             ];
 
             shellHook = ''
@@ -83,6 +84,7 @@
               echo "  nix build .#all             - Generate all code"
               echo "  nix flake check             - Run all checks"
               echo "  nix run .#list-frameworks   - List all frameworks"
+              echo "  nix run .#test-ci           - Test CI locally with act"
               echo ""
               echo "Frameworks: GDPR, SOC 2, HIPAA, FedRAMP, ISO 27001, PCI-DSS"
               echo "Languages: Java, TypeScript, Python, Go"
@@ -148,6 +150,41 @@
             ''}";
             meta = {
               description = "Generate all compliance code for all languages";
+            };
+          };
+
+          # Test CI locally with act
+          test-ci = {
+            type = "app";
+            program = "${pkgs.writeShellScript "test-ci" ''
+              cd "''${PRJ_ROOT:-.}"
+
+              # Create .actrc if it doesn't exist
+              if [ ! -f .actrc ]; then
+                echo "Creating .actrc configuration..."
+                cat > .actrc <<EOF
+              --container-architecture linux/amd64
+              -P ubuntu-latest=catthehacker/ubuntu:act-latest
+              EOF
+              fi
+
+              echo "Testing GitHub Actions workflows locally with act..."
+              echo ""
+              ${pkgs.act}/bin/act -l
+              echo ""
+              echo "Run specific job:"
+              echo "  act -j check           # Run flake check"
+              echo "  act -j build-generators  # Run build generators"
+              echo "  act -j format-check    # Run format check"
+              echo ""
+              echo "Run all workflows:"
+              echo "  act push"
+              echo ""
+              echo "Dry run (show what would run):"
+              echo "  act -j check -n"
+            ''}";
+            meta = {
+              description = "Test CI workflows locally with act";
             };
           };
 
