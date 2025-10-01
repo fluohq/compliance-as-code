@@ -40,10 +40,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        hipaa = ["164.312(a)(1)"];
-        fedramp = ["AC-2" "AC-3"];
-        iso27001 = ["A.9.2.1" "A.9.4.1"];
-        pcidss = ["7.1" "8.1"];
+        hipaa = [ "164.312(a)(1)" ];
+        fedramp = [ "AC-2" "AC-3" ];
+        iso27001 = [ "A.9.2.1" "A.9.4.1" ];
+        pcidss = [ "7.1" "8.1" ];
       };
       testingProcedures = [
         "Verify RBAC implementation"
@@ -62,7 +62,7 @@ let
         "Access is denied by default"
       ];
       metadata = {
-        tags = ["technical" "access-control"];
+        tags = [ "technical" "access-control" ];
         automatable = true;
         priority = "high";
       };
@@ -100,10 +100,10 @@ let
         technicalControlTypes.AUTHENTICATION
       ];
       mappings = {
-        hipaa = ["164.308(a)(3)(ii)(B)"];
-        fedramp = ["AC-2" "IA-2"];
-        iso27001 = ["A.9.2.1"];
-        pcidss = ["8.1.3" "8.1.4"];
+        hipaa = [ "164.308(a)(3)(ii)(B)" ];
+        fedramp = [ "AC-2" "IA-2" ];
+        iso27001 = [ "A.9.2.1" ];
+        pcidss = [ "8.1.3" "8.1.4" ];
       };
       testingProcedures = [
         "Review user provisioning logs"
@@ -115,7 +115,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["administrative" "access-control"];
+        tags = [ "administrative" "access-control" ];
         automatable = true;
       };
     };
@@ -152,10 +152,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        hipaa = ["164.308(a)(3)(ii)(C)"];
-        fedramp = ["AC-2"];
-        iso27001 = ["A.9.2.6"];
-        pcidss = ["8.1.3"];
+        hipaa = [ "164.308(a)(3)(ii)(C)" ];
+        fedramp = [ "AC-2" ];
+        iso27001 = [ "A.9.2.6" ];
+        pcidss = [ "8.1.3" ];
       };
       testingProcedures = [
         "Review deprovisioning logs"
@@ -167,7 +167,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "access-control"];
+        tags = [ "technical" "access-control" ];
         automatable = true;
         priority = "high";
       };
@@ -206,10 +206,10 @@ let
         technicalControlTypes.CONFIGURATION_MANAGEMENT
       ];
       mappings = {
-        hipaa = ["164.312(a)(2)(iv)"];
-        fedramp = ["SC-28"];
-        iso27001 = ["A.10.1.1"];
-        pcidss = ["3.4" "3.5"];
+        hipaa = [ "164.312(a)(2)(iv)" ];
+        fedramp = [ "SC-28" ];
+        iso27001 = [ "A.10.1.1" ];
+        pcidss = [ "3.4" "3.5" ];
       };
       testingProcedures = [
         "Verify encryption at rest configuration"
@@ -227,7 +227,7 @@ let
         "Key rotation is automated"
       ];
       metadata = {
-        tags = ["technical" "encryption"];
+        tags = [ "technical" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -268,10 +268,10 @@ let
         technicalControlTypes.CONFIGURATION_MANAGEMENT
       ];
       mappings = {
-        hipaa = ["164.312(e)(1)"];
-        fedramp = ["SC-8"];
-        iso27001 = ["A.13.2.1"];
-        pcidss = ["4.1" "4.2"];
+        hipaa = [ "164.312(e)(1)" ];
+        fedramp = [ "SC-8" ];
+        iso27001 = [ "A.13.2.1" ];
+        pcidss = [ "4.1" "4.2" ];
       };
       testingProcedures = [
         "Scan for TLS version support"
@@ -289,7 +289,7 @@ let
         "Weak ciphers are disabled"
       ];
       metadata = {
-        tags = ["technical" "encryption"];
+        tags = [ "technical" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -332,10 +332,10 @@ let
         technicalControlTypes.INCIDENT_RESPONSE
       ];
       mappings = {
-        hipaa = ["164.308(a)(1)(ii)(D)"];
-        fedramp = ["SI-4" "AU-6"];
-        iso27001 = ["A.12.4.1"];
-        pcidss = ["10.6" "11.4"];
+        hipaa = [ "164.308(a)(1)(ii)(D)" ];
+        fedramp = [ "SI-4" "AU-6" ];
+        iso27001 = [ "A.12.4.1" ];
+        pcidss = [ "10.6" "11.4" ];
       };
       testingProcedures = [
         "Verify monitoring coverage"
@@ -354,7 +354,7 @@ let
         "Logs are retained for required period"
       ];
       metadata = {
-        tags = ["technical" "monitoring"];
+        tags = [ "technical" "monitoring" ];
         automatable = true;
         priority = "high";
       };
@@ -393,10 +393,10 @@ let
         technicalControlTypes.INCIDENT_RESPONSE
       ];
       mappings = {
-        hipaa = ["164.308(a)(1)(ii)(D)"];
-        fedramp = ["SI-4"];
-        iso27001 = ["A.12.4.1"];
-        pcidss = ["10.6"];
+        hipaa = [ "164.308(a)(1)(ii)(D)" ];
+        fedramp = [ "SI-4" ];
+        iso27001 = [ "A.12.4.1" ];
+        pcidss = [ "10.6" ];
       };
       testingProcedures = [
         "Review monitoring coverage"
@@ -408,7 +408,7 @@ let
         patterns.MIDDLEWARE
       ];
       metadata = {
-        tags = ["technical" "monitoring"];
+        tags = [ "technical" "monitoring" ];
         automatable = true;
       };
     };
@@ -448,10 +448,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        hipaa = ["164.308(a)(8)"];
-        fedramp = ["CM-3" "CM-4"];
-        iso27001 = ["A.12.1.2" "A.14.2.2"];
-        pcidss = ["6.4"];
+        hipaa = [ "164.308(a)(8)" ];
+        fedramp = [ "CM-3" "CM-4" ];
+        iso27001 = [ "A.12.1.2" "A.14.2.2" ];
+        pcidss = [ "6.4" ];
       };
       testingProcedures = [
         "Review change request process"
@@ -463,7 +463,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["administrative" "change-management"];
+        tags = [ "administrative" "change-management" ];
         automatable = true;
       };
     };

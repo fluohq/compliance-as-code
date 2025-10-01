@@ -22,7 +22,7 @@ jobs:
       - name: Setup Cachix
         uses: cachix/cachix-action@v13
         with:
-          name: compliance-as-code
+          name: fluohq
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Run flake checks
@@ -46,7 +46,7 @@ jobs:
       - name: Setup Cachix
         uses: cachix/cachix-action@v13
         with:
-          name: compliance-as-code
+          name: fluohq
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Build all ${{ matrix.language }} generators
@@ -71,7 +71,7 @@ jobs:
       - name: Setup Cachix
         uses: cachix/cachix-action@v13
         with:
-          name: compliance-as-code
+          name: fluohq
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Build all examples

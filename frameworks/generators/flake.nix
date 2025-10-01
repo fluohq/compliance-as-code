@@ -25,23 +25,24 @@
 
         # Helper to escape strings for Java
         escapeJava = str: builtins.replaceStrings
-          ["\\" "\"" "\n" "\r" "\t"]
-          ["\\\\" "\\\"" "\\n" "\\r" "\\t"]
+          [ "\\" "\"" "\n" "\r" "\t" ]
+          [ "\\\\" "\\\"" "\\n" "\\r" "\\t" ]
           str;
 
         # Helper to create valid Java class names
         toJavaClassName = str:
           let
-            cleaned = builtins.replaceStrings ["." "-" "(" ")" " " "/" ":"] ["_" "_" "" "" "_" "_" "_"] str;
+            cleaned = builtins.replaceStrings [ "." "-" "(" ")" " " "/" ":" ] [ "_" "_" "" "" "_" "_" "_" ] str;
             # Java identifiers can't start with numbers, prefix with underscore if needed
             firstChar = builtins.substring 0 1 cleaned;
             needsPrefix = builtins.match "[0-9]" firstChar != null;
-          in if needsPrefix then "_${cleaned}" else cleaned;
+          in
+          if needsPrefix then "_${cleaned}" else cleaned;
 
         # Generate type-safe Java code with full IDE support and evidence collection
         generateJava = controls: frameworkName:
           let
-            frameworkUpper = builtins.replaceStrings ["-" " "] ["_" "_"] (pkgs.lib.toUpper frameworkName);
+            frameworkUpper = builtins.replaceStrings [ "-" " " ] [ "_" "_" ] (pkgs.lib.toUpper frameworkName);
             controlIds = builtins.map (c: c.id) controls;
 
             # Generate redaction annotations
@@ -688,115 +689,117 @@
             '';
 
             # Generate detailed control model classes
-            controlModelFiles = builtins.map (control:
-              let className = toJavaClassName control.id;
-              in {
-                file = pkgs.writeText "${frameworkName}-${className}.java" ''
-                package com.compliance.models;
+            controlModelFiles = builtins.map
+              (control:
+                let className = toJavaClassName control.id;
+                in {
+                  file = pkgs.writeText "${frameworkName}-${className}.java" ''
+                    package com.compliance.models;
 
-                import java.util.*;
-
-                /**
-                 * <h2>${escapeJava control.name}</h2>
-                 *
-                 * <p><b>Control ID:</b> ${control.id}</p>
-                 * <p><b>Framework:</b> ${frameworkName}</p>
-                 * <p><b>Category:</b> ${escapeJava control.category}</p>
-                 * <p><b>Risk Level:</b> ${control.riskLevel}</p>
-                 *
-                 * <h3>Description</h3>
-                 * <p>${escapeJava (builtins.replaceStrings ["\n"] ["</p>\n * <p>"] control.description)}</p>
-                 *
-                 * <h3>Requirements</h3>
-                 * <ul>
-                 * ${builtins.concatStringsSep "\n * " (builtins.map (req: "<li>${escapeJava req}</li>") control.requirements)}
-                 * </ul>
-                 *
-                 * <h3>Implementation Guidance</h3>
-                 * <p>${escapeJava (builtins.replaceStrings ["\n"] ["</p>\n * <p>"] control.implementationGuidance)}</p>
-                 *
-                 * <h3>Testing Procedures</h3>
-                 * <ul>
-                 * ${builtins.concatStringsSep "\n * " (builtins.map (proc: "<li>${escapeJava proc}</li>") control.testingProcedures)}
-                 * </ul>
-                 *
-                 * @see com.compliance.annotations.${frameworkUpper}
-                 * @see com.compliance.annotations.${frameworkUpper}Controls#${className}
-                 */
-                public final class ${frameworkUpper}_${className} implements ComplianceControl {
-                    /** Control ID constant */
-                    public static final String ID = "${control.id}";
-
-                    /** Control name */
-                    public static final String NAME = "${escapeJava control.name}";
-
-                    /** Category */
-                    public static final String CATEGORY = "${escapeJava control.category}";
-
-                    /** Risk level */
-                    public static final String RISK_LEVEL = "${control.riskLevel}";
-
-                    /** Requirements */
-                    public static final List<String> REQUIREMENTS = List.of(
-                        ${builtins.concatStringsSep ",\n        " (builtins.map (req: "\"${escapeJava req}\"") control.requirements)}
-                    );
-
-                    /** Evidence types */
-                    public static final List<String> EVIDENCE_TYPES = List.of(
-                        ${builtins.concatStringsSep ",\n        " (builtins.map (et: "\"${et}\"") control.evidenceTypes)}
-                    );
-
-                    private ${frameworkUpper}_${className}() {}
-
-                    @Override
-                    public String getId() { return ID; }
-
-                    @Override
-                    public String getName() { return NAME; }
-
-                    @Override
-                    public String getCategory() { return CATEGORY; }
-
-                    @Override
-                    public String getDescription() {
-                        return """
-                            ${escapeJava control.description}
-                            """;
-                    }
-
-                    @Override
-                    public String getRiskLevel() { return RISK_LEVEL; }
-
-                    @Override
-                    public List<String> getRequirements() { return REQUIREMENTS; }
-
-                    @Override
-                    public List<String> getEvidenceTypes() { return EVIDENCE_TYPES; }
+                    import java.util.*;
 
                     /**
-                     * Get implementation guidance for this control.
-                     * @return detailed implementation guidance
+                     * <h2>${escapeJava control.name}</h2>
+                     *
+                     * <p><b>Control ID:</b> ${control.id}</p>
+                     * <p><b>Framework:</b> ${frameworkName}</p>
+                     * <p><b>Category:</b> ${escapeJava control.category}</p>
+                     * <p><b>Risk Level:</b> ${control.riskLevel}</p>
+                     *
+                     * <h3>Description</h3>
+                     * <p>${escapeJava (builtins.replaceStrings ["\n"] ["</p>\n * <p>"] control.description)}</p>
+                     *
+                     * <h3>Requirements</h3>
+                     * <ul>
+                     * ${builtins.concatStringsSep "\n * " (builtins.map (req: "<li>${escapeJava req}</li>") control.requirements)}
+                     * </ul>
+                     *
+                     * <h3>Implementation Guidance</h3>
+                     * <p>${escapeJava (builtins.replaceStrings ["\n"] ["</p>\n * <p>"] control.implementationGuidance)}</p>
+                     *
+                     * <h3>Testing Procedures</h3>
+                     * <ul>
+                     * ${builtins.concatStringsSep "\n * " (builtins.map (proc: "<li>${escapeJava proc}</li>") control.testingProcedures)}
+                     * </ul>
+                     *
+                     * @see com.compliance.annotations.${frameworkUpper}
+                     * @see com.compliance.annotations.${frameworkUpper}Controls#${className}
                      */
-                    public static String getImplementationGuidance() {
-                        return """
-                            ${escapeJava control.implementationGuidance}
-                            """;
-                    }
+                    public final class ${frameworkUpper}_${className} implements ComplianceControl {
+                        /** Control ID constant */
+                        public static final String ID = "${control.id}";
 
-                    /**
-                     * Get testing procedures for this control.
-                     * @return list of testing procedures
-                     */
-                    public static List<String> getTestingProcedures() {
-                        return List.of(
-                            ${builtins.concatStringsSep ",\n            " (builtins.map (proc: "\"${escapeJava proc}\"") control.testingProcedures)}
+                        /** Control name */
+                        public static final String NAME = "${escapeJava control.name}";
+
+                        /** Category */
+                        public static final String CATEGORY = "${escapeJava control.category}";
+
+                        /** Risk level */
+                        public static final String RISK_LEVEL = "${control.riskLevel}";
+
+                        /** Requirements */
+                        public static final List<String> REQUIREMENTS = List.of(
+                            ${builtins.concatStringsSep ",\n        " (builtins.map (req: "\"${escapeJava req}\"") control.requirements)}
                         );
+
+                        /** Evidence types */
+                        public static final List<String> EVIDENCE_TYPES = List.of(
+                            ${builtins.concatStringsSep ",\n        " (builtins.map (et: "\"${et}\"") control.evidenceTypes)}
+                        );
+
+                        private ${frameworkUpper}_${className}() {}
+
+                        @Override
+                        public String getId() { return ID; }
+
+                        @Override
+                        public String getName() { return NAME; }
+
+                        @Override
+                        public String getCategory() { return CATEGORY; }
+
+                        @Override
+                        public String getDescription() {
+                            return """
+                                ${escapeJava control.description}
+                                """;
+                        }
+
+                        @Override
+                        public String getRiskLevel() { return RISK_LEVEL; }
+
+                        @Override
+                        public List<String> getRequirements() { return REQUIREMENTS; }
+
+                        @Override
+                        public List<String> getEvidenceTypes() { return EVIDENCE_TYPES; }
+
+                        /**
+                         * Get implementation guidance for this control.
+                         * @return detailed implementation guidance
+                         */
+                        public static String getImplementationGuidance() {
+                            return """
+                                ${escapeJava control.implementationGuidance}
+                                """;
+                        }
+
+                        /**
+                         * Get testing procedures for this control.
+                         * @return list of testing procedures
+                         */
+                        public static List<String> getTestingProcedures() {
+                            return List.of(
+                                ${builtins.concatStringsSep ",\n            " (builtins.map (proc: "\"${escapeJava proc}\"") control.testingProcedures)}
+                            );
+                        }
                     }
+                  '';
+                  name = "${frameworkUpper}_${className}.java";
                 }
-              '';
-                name = "${frameworkUpper}_${className}.java";
-              }
-            ) controls;
+              )
+              controls;
 
             # Generate base interface
             baseInterfaceFile = pkgs.writeText "ComplianceControl.java" ''
@@ -835,56 +838,57 @@
             '';
 
           in
-            pkgs.runCommand "java-${frameworkName}" {
+          pkgs.runCommand "java-${frameworkName}"
+            {
               buildInputs = [ pkgs.jdk21 ];
             } ''
-              mkdir -p $out/src/main/java/com/compliance/{annotations,models,evidence}
+            mkdir -p $out/src/main/java/com/compliance/{annotations,models,evidence}
 
-              # Copy evidence infrastructure (shared across all frameworks)
-              cp ${redactAnnotation} $out/src/main/java/com/compliance/evidence/Redact.java
-              cp ${redactionStrategyEnum} $out/src/main/java/com/compliance/evidence/RedactionStrategy.java
-              cp ${sensitiveAnnotation} $out/src/main/java/com/compliance/evidence/Sensitive.java
-              cp ${piiAnnotation} $out/src/main/java/com/compliance/evidence/PII.java
-              cp ${complianceSpanBase} $out/src/main/java/com/compliance/evidence/ComplianceSpan.java
-              cp ${evidenceTypeEnum} $out/src/main/java/com/compliance/evidence/EvidenceType.java
+            # Copy evidence infrastructure (shared across all frameworks)
+            cp ${redactAnnotation} $out/src/main/java/com/compliance/evidence/Redact.java
+            cp ${redactionStrategyEnum} $out/src/main/java/com/compliance/evidence/RedactionStrategy.java
+            cp ${sensitiveAnnotation} $out/src/main/java/com/compliance/evidence/Sensitive.java
+            cp ${piiAnnotation} $out/src/main/java/com/compliance/evidence/PII.java
+            cp ${complianceSpanBase} $out/src/main/java/com/compliance/evidence/ComplianceSpan.java
+            cp ${evidenceTypeEnum} $out/src/main/java/com/compliance/evidence/EvidenceType.java
 
-              # Copy framework-specific evidence annotation
-              cp ${evidenceAnnotationFile} $out/src/main/java/com/compliance/annotations/${frameworkUpper}Evidence.java
+            # Copy framework-specific evidence annotation
+            cp ${evidenceAnnotationFile} $out/src/main/java/com/compliance/annotations/${frameworkUpper}Evidence.java
 
-              # Copy generated files (legacy annotation - kept for backward compatibility)
-              cp ${annotationFile} $out/src/main/java/com/compliance/annotations/${frameworkUpper}.java
-              cp ${controlsFile} $out/src/main/java/com/compliance/annotations/${frameworkUpper}Controls.java
-              cp ${controlEnumFile} $out/src/main/java/com/compliance/models/${frameworkUpper}Control.java
-              cp ${baseInterfaceFile} $out/src/main/java/com/compliance/models/ComplianceControl.java
+            # Copy generated files (legacy annotation - kept for backward compatibility)
+            cp ${annotationFile} $out/src/main/java/com/compliance/annotations/${frameworkUpper}.java
+            cp ${controlsFile} $out/src/main/java/com/compliance/annotations/${frameworkUpper}Controls.java
+            cp ${controlEnumFile} $out/src/main/java/com/compliance/models/${frameworkUpper}Control.java
+            cp ${baseInterfaceFile} $out/src/main/java/com/compliance/models/ComplianceControl.java
 
-              # Copy control model files
-              ${builtins.concatStringsSep "\n  " (builtins.map (cf:
-                "cp ${cf.file} $out/src/main/java/com/compliance/models/${cf.name}"
-              ) controlModelFiles)}
+            # Copy control model files
+            ${builtins.concatStringsSep "\n  " (builtins.map (cf:
+              "cp ${cf.file} $out/src/main/java/com/compliance/models/${cf.name}"
+            ) controlModelFiles)}
 
-              # Compile for validation
-              cd $out/src/main/java
-              javac com/compliance/evidence/*.java com/compliance/annotations/*.java com/compliance/models/*.java
+            # Compile for validation
+            cd $out/src/main/java
+            javac com/compliance/evidence/*.java com/compliance/annotations/*.java com/compliance/models/*.java
 
-              echo ""
-              echo "✓ Generated type-safe Java compliance code with evidence collection for ${frameworkName}"
-              echo ""
-              echo "📦 Location: $out/src/main/java"
-              echo ""
-              echo "📋 Generated Components:"
-              echo "   • Evidence annotations: @${frameworkUpper}Evidence, @Redact, @Sensitive, @PII"
-              echo "   • Immutable span classes: ComplianceSpan (base class)"
-              echo "   • Control annotations: @${frameworkUpper}, ${frameworkUpper}Controls"
-              echo "   • Control enums: ${frameworkUpper}Control"
-              echo ""
-              echo "🔍 Usage:"
-              echo "   @${frameworkUpper}Evidence("
-              echo "       control = ${frameworkUpper}Controls.${toJavaClassName (builtins.head controlIds)},"
-              echo "       evidenceType = EvidenceType.AUDIT_TRAIL"
-              echo "   )"
-              echo "   public Result method(@Redact String password) { ... }"
-              echo ""
-            '';
+            echo ""
+            echo "✓ Generated type-safe Java compliance code with evidence collection for ${frameworkName}"
+            echo ""
+            echo "📦 Location: $out/src/main/java"
+            echo ""
+            echo "📋 Generated Components:"
+            echo "   • Evidence annotations: @${frameworkUpper}Evidence, @Redact, @Sensitive, @PII"
+            echo "   • Immutable span classes: ComplianceSpan (base class)"
+            echo "   • Control annotations: @${frameworkUpper}, ${frameworkUpper}Controls"
+            echo "   • Control enums: ${frameworkUpper}Control"
+            echo ""
+            echo "🔍 Usage:"
+            echo "   @${frameworkUpper}Evidence("
+            echo "       control = ${frameworkUpper}Controls.${toJavaClassName (builtins.head controlIds)},"
+            echo "       evidenceType = EvidenceType.AUDIT_TRAIL"
+            echo "   )"
+            echo "   public Result method(@Redact String password) { ... }"
+            echo ""
+          '';
 
         # Generate type-safe TypeScript with full LSP support
         generateTypeScript = controls: frameworkName:
@@ -1158,36 +1162,37 @@
             '';
 
           in
-            pkgs.runCommand "typescript-${frameworkName}" {
+          pkgs.runCommand "typescript-${frameworkName}"
+            {
               buildInputs = [ pkgs.nodejs pkgs.typescript ];
             } ''
-              mkdir -p $out/src
+            mkdir -p $out/src
 
-              cp ${typesFile} $out/${frameworkName}.d.ts
-              cp ${implFile} $out/src/${frameworkName}.ts
-              cp ${packageJsonFile} $out/package.json
-              cp ${tsconfigFile} $out/tsconfig.json
+            cp ${typesFile} $out/${frameworkName}.d.ts
+            cp ${implFile} $out/src/${frameworkName}.ts
+            cp ${packageJsonFile} $out/package.json
+            cp ${tsconfigFile} $out/tsconfig.json
 
-              cd $out
+            cd $out
 
-              # Type check the generated code
-              tsc --noEmit src/${frameworkName}.ts || echo "Type checking completed"
+            # Type check the generated code
+            tsc --noEmit src/${frameworkName}.ts || echo "Type checking completed"
 
-              # Create index exports
-              cat > $out/src/index.ts <<EOF
-              export * from './${frameworkName}';
-              EOF
+            # Create index exports
+            cat > $out/src/index.ts <<EOF
+            export * from './${frameworkName}';
+            EOF
 
-              echo "Generated type-safe TypeScript compliance code for ${frameworkName}"
-              echo "Location: $out"
-              echo "Import with: import { ${frameworkUpper}, ${frameworkUpper}ControlId } from '@compliance/${frameworkName}';"
-            '';
+            echo "Generated type-safe TypeScript compliance code for ${frameworkName}"
+            echo "Location: $out"
+            echo "Import with: import { ${frameworkUpper}, ${frameworkUpper}ControlId } from '@compliance/${frameworkName}';"
+          '';
 
         # Generate Python with type hints and LSP support
         generatePython = controls: frameworkName:
           let
             frameworkUpper = pkgs.lib.toUpper frameworkName;
-            frameworkSnake = builtins.replaceStrings ["-" " "] ["_" "_"] frameworkName;
+            frameworkSnake = builtins.replaceStrings [ "-" " " ] [ "_" "_" ] frameworkName;
 
             # Main Python module with type hints
             mainFile = pkgs.writeText "${frameworkSnake}.py" ''
@@ -1433,46 +1438,48 @@
             pyTypedFile = pkgs.writeText "py.typed" "";
 
           in
-            pkgs.runCommand "python-${frameworkName}" {
+          pkgs.runCommand "python-${frameworkName}"
+            {
               buildInputs = [ pkgs.python3 pkgs.python3Packages.mypy ];
             } ''
-              mkdir -p $out/compliance
+            mkdir -p $out/compliance
 
-              cp ${mainFile} $out/compliance/${frameworkSnake}.py
-              cp ${stubFile} $out/compliance/${frameworkSnake}.pyi
-              cp ${pyTypedFile} $out/compliance/py.typed
+            cp ${mainFile} $out/compliance/${frameworkSnake}.py
+            cp ${stubFile} $out/compliance/${frameworkSnake}.pyi
+            cp ${pyTypedFile} $out/compliance/py.typed
 
-              # Create __init__.py
-              cat > $out/compliance/__init__.py <<EOF
-              """Compliance control modules."""
-              from .${frameworkSnake} import *
+            # Create __init__.py
+            cat > $out/compliance/__init__.py <<EOF
+            """Compliance control modules."""
+            from .${frameworkSnake} import *
 
-              __all__ = ['${frameworkSnake}_control', 'ControlId', 'RiskLevel', 'EvidenceType']
-              EOF
+            __all__ = ['${frameworkSnake}_control', 'ControlId', 'RiskLevel', 'EvidenceType']
+            EOF
 
-              # Type check with mypy
-              cd $out
-              mypy --strict compliance/${frameworkSnake}.py || echo "Type checking completed"
+            # Type check with mypy
+            cd $out
+            mypy --strict compliance/${frameworkSnake}.py || echo "Type checking completed"
 
-              echo "Generated type-safe Python compliance code for ${frameworkName}"
-              echo "Location: $out/compliance"
-              echo "Import with: from compliance.${frameworkSnake} import ${frameworkSnake}_control, ControlId"
-            '';
+            echo "Generated type-safe Python compliance code for ${frameworkName}"
+            echo "Location: $out/compliance"
+            echo "Import with: from compliance.${frameworkSnake} import ${frameworkSnake}_control, ControlId"
+          '';
 
         # Generate Go with context-based evidence (idiomatic Go pattern)
         generateGo = controls: frameworkName:
           let
             frameworkLower = pkgs.lib.toLower frameworkName;
             frameworkUpper = pkgs.lib.toUpper frameworkName;
-            packageName = builtins.replaceStrings ["-"] [""] frameworkLower;
+            packageName = builtins.replaceStrings [ "-" ] [ "" ] frameworkLower;
 
             # Helper to convert control ID to Go constant name
             toGoConstant = str:
               let
-                cleaned = builtins.replaceStrings ["." "-" "(" ")" " " "/" ":"] ["_" "_" "" "" "_" "_" "_"] str;
+                cleaned = builtins.replaceStrings [ "." "-" "(" ")" " " "/" ":" ] [ "_" "_" "" "" "_" "_" "_" ] str;
                 firstChar = builtins.substring 0 1 cleaned;
                 needsPrefix = builtins.match "[0-9]" firstChar != null;
-              in if needsPrefix then "_${cleaned}" else cleaned;
+              in
+              if needsPrefix then "_${cleaned}" else cleaned;
 
             # Generate control constants
             controlsFile = pkgs.writeText "${packageName}_controls.go" ''
@@ -1715,37 +1722,38 @@
             '';
 
           in
-            pkgs.runCommand "go-${frameworkName}" {
+          pkgs.runCommand "go-${frameworkName}"
+            {
               buildInputs = [ pkgs.go ];
             } ''
-              mkdir -p $out/${packageName}
+            mkdir -p $out/${packageName}
 
-              cp ${controlsFile} $out/${packageName}/controls.go
-              cp ${evidenceFile} $out/${packageName}/evidence.go
-              cp ${goModFile} $out/${packageName}/go.mod
-              cp ${readmeFile} $out/${packageName}/README.md
+            cp ${controlsFile} $out/${packageName}/controls.go
+            cp ${evidenceFile} $out/${packageName}/evidence.go
+            cp ${goModFile} $out/${packageName}/go.mod
+            cp ${readmeFile} $out/${packageName}/README.md
 
-              cd $out/${packageName}
+            cd $out/${packageName}
 
-              # Format Go code
-              ${pkgs.go}/bin/gofmt -w *.go
+            # Format Go code
+            ${pkgs.go}/bin/gofmt -w *.go
 
-              echo ""
-              echo "✓ Generated Go compliance code for ${frameworkName}"
-              echo ""
-              echo "📦 Location: $out/${packageName}"
-              echo ""
-              echo "📋 Generated Components:"
-              echo "   • Context-based evidence: WithEvidence(), BeginEvidence()"
-              echo "   • Control constants: ${packageName}.${toGoConstant (builtins.head (builtins.map (c: c.id) controls))}, etc."
-              echo "   • Automatic redaction for sensitive fields"
-              echo "   • OpenTelemetry span emission"
-              echo ""
-              echo "🔍 Usage:"
-              echo "   ctx = ${packageName}.WithEvidence(ctx, ${packageName}.${toGoConstant (builtins.head (builtins.map (c: c.id) controls))})"
-              echo "   defer ${packageName}.EmitEvidence(ctx)"
-              echo ""
-            '';
+            echo ""
+            echo "✓ Generated Go compliance code for ${frameworkName}"
+            echo ""
+            echo "📦 Location: $out/${packageName}"
+            echo ""
+            echo "📋 Generated Components:"
+            echo "   • Context-based evidence: WithEvidence(), BeginEvidence()"
+            echo "   • Control constants: ${packageName}.${toGoConstant (builtins.head (builtins.map (c: c.id) controls))}, etc."
+            echo "   • Automatic redaction for sensitive fields"
+            echo "   • OpenTelemetry span emission"
+            echo ""
+            echo "🔍 Usage:"
+            echo "   ctx = ${packageName}.WithEvidence(ctx, ${packageName}.${toGoConstant (builtins.head (builtins.map (c: c.id) controls))})"
+            echo "   defer ${packageName}.EmitEvidence(ctx)"
+            echo ""
+          '';
 
       in
       {

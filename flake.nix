@@ -154,7 +154,7 @@
           all-generators = self.packages.${system}.all;
 
           # Check Nix formatting
-          nix-fmt = pkgs.runCommand "check-nix-fmt" {} ''
+          nix-fmt = pkgs.runCommand "check-nix-fmt" { } ''
             ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}
             touch $out
           '';

@@ -4,88 +4,93 @@
 
 {
   # mkControl creates a standardized control definition
-  mkControl = {
-    # Unique identifier for the control
-    id,
-    # Human-readable name
-    name,
-    # Framework-specific categorization
-    category,
-    # Detailed description of what the control requires
-    description,
-    # Implementation requirements and guidance
-    requirements ? [],
-    # Evidence types that demonstrate compliance
-    evidenceTypes ? [],
-    # Suggested implementation methods
-    implementationGuidance ? "",
-    # Risk level if control is not implemented
-    riskLevel ? "medium", # low, medium, high, critical
-    # Technical implementation hints
-    technicalControls ? [],
-    # Canonical security objectives this control satisfies (list of taxonomy IDs)
-    # e.g., ["IAM.AUTH.VERIFY.UNIQUE_ID", "IAM.AUTHZ.ACCESS.DENY_DEFAULT"]
-    canonicalObjectives ? [],
-    # DEPRECATED: Legacy cross-framework mappings (use canonicalObjectives instead)
-    # Will be automatically converted to canonical objectives in future versions
-    mappings ? {},
-    # Testing procedures
-    testingProcedures ? [],
-    # Common implementation patterns
-    patterns ? [],
-    # Validation rules
-    validations ? [],
-    # Metadata
-    metadata ? {},
-  }: {
-    inherit id name category description requirements evidenceTypes
-            implementationGuidance riskLevel technicalControls canonicalObjectives
-            mappings testingProcedures patterns validations metadata;
+  mkControl =
+    {
+      # Unique identifier for the control
+      id
+    , # Human-readable name
+      name
+    , # Framework-specific categorization
+      category
+    , # Detailed description of what the control requires
+      description
+    , # Implementation requirements and guidance
+      requirements ? [ ]
+    , # Evidence types that demonstrate compliance
+      evidenceTypes ? [ ]
+    , # Suggested implementation methods
+      implementationGuidance ? ""
+    , # Risk level if control is not implemented
+      riskLevel ? "medium"
+    , # low, medium, high, critical
+      # Technical implementation hints
+      technicalControls ? [ ]
+    , # Canonical security objectives this control satisfies (list of taxonomy IDs)
+      # e.g., ["IAM.AUTH.VERIFY.UNIQUE_ID", "IAM.AUTHZ.ACCESS.DENY_DEFAULT"]
+      canonicalObjectives ? [ ]
+    , # DEPRECATED: Legacy cross-framework mappings (use canonicalObjectives instead)
+      # Will be automatically converted to canonical objectives in future versions
+      mappings ? { }
+    , # Testing procedures
+      testingProcedures ? [ ]
+    , # Common implementation patterns
+      patterns ? [ ]
+    , # Validation rules
+      validations ? [ ]
+    , # Metadata
+      metadata ? { }
+    ,
+    }: {
+      inherit id name category description requirements evidenceTypes
+        implementationGuidance riskLevel technicalControls canonicalObjectives
+        mappings testingProcedures patterns validations metadata;
 
-    # Control type classification
-    type =
-      if (builtins.elem "technical" (metadata.tags or []))
-      then "technical"
-      else if (builtins.elem "administrative" (metadata.tags or []))
-      then "administrative"
-      else if (builtins.elem "physical" (metadata.tags or []))
-      then "physical"
-      else "operational";
-  };
+      # Control type classification
+      type =
+        if (builtins.elem "technical" (metadata.tags or [ ]))
+        then "technical"
+        else if (builtins.elem "administrative" (metadata.tags or [ ]))
+        then "administrative"
+        else if (builtins.elem "physical" (metadata.tags or [ ]))
+        then "physical"
+        else "operational";
+    };
 
   # mkFramework creates a framework definition with its controls
-  mkFramework = {
-    # Framework identifier
-    id,
-    # Full name
-    name,
-    # Short description
-    description,
-    # Version of the framework
-    version,
-    # Issuing organization
-    organization,
-    # URL to official documentation
-    url ? "",
-    # List of control definitions
-    controls,
-    # Framework-specific metadata
-    metadata ? {},
-  }: {
-    inherit id name description version organization url controls metadata;
+  mkFramework =
+    {
+      # Framework identifier
+      id
+    , # Full name
+      name
+    , # Short description
+      description
+    , # Version of the framework
+      version
+    , # Issuing organization
+      organization
+    , # URL to official documentation
+      url ? ""
+    , # List of control definitions
+      controls
+    , # Framework-specific metadata
+      metadata ? { }
+    ,
+    }: {
+      inherit id name description version organization url controls metadata;
 
-    # Helper to find control by ID
-    getControl = controlId:
-      builtins.head (builtins.filter (c: c.id == controlId) controls);
+      # Helper to find control by ID
+      getControl = controlId:
+        builtins.head (builtins.filter (c: c.id == controlId) controls);
 
-    # Get all controls by category
-    getControlsByCategory = category:
-      builtins.filter (c: c.category == category) controls;
+      # Get all controls by category
+      getControlsByCategory = category:
+        builtins.filter (c: c.category == category) controls;
 
-    # Get controls by risk level
-    getControlsByRisk = riskLevel:
-      builtins.filter (c: c.riskLevel == riskLevel) controls;
-  };
+      # Get controls by risk level
+      getControlsByRisk = riskLevel:
+        builtins.filter (c: c.riskLevel == riskLevel) controls;
+    };
 
   # Evidence type definitions
   evidenceTypes = {
@@ -121,11 +126,11 @@
 
   # Redaction strategies for sensitive data
   redactionStrategies = {
-    EXCLUDE = "exclude";           # Don't include in evidence
-    REDACT = "redact";             # Replace with "<redacted>"
-    HASH = "hash";                 # SHA-256 hash for correlation
-    TRUNCATE = "truncate";         # Show first/last N chars
-    ENCRYPT = "encrypt";           # Encrypt with evidence key
+    EXCLUDE = "exclude"; # Don't include in evidence
+    REDACT = "redact"; # Replace with "<redacted>"
+    HASH = "hash"; # SHA-256 hash for correlation
+    TRUNCATE = "truncate"; # Show first/last N chars
+    ENCRYPT = "encrypt"; # Encrypt with evidence key
   };
 
   # OpenTelemetry semantic conventions for compliance

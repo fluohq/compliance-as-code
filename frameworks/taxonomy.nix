@@ -591,25 +591,33 @@
         if builtins.length parts == 0 then null
         else if builtins.length parts == 1 then taxonomy
         else
-          let head = builtins.head parts;
-              tail = builtins.tail parts;
-          in if builtins.hasAttr head taxonomy
-             then findInTaxonomy (builtins.getAttr head taxonomy) tail
-             else null;
-    in findInTaxonomy taxonomy parts;
+          let
+            head = builtins.head parts;
+            tail = builtins.tail parts;
+          in
+          if builtins.hasAttr head taxonomy
+          then findInTaxonomy (builtins.getAttr head taxonomy) tail
+          else null;
+    in
+    findInTaxonomy taxonomy parts;
 
   # Find all framework controls that map to a given canonical objective
   findMappedControls = frameworks: objectiveId:
     let
       # For each framework, find controls that map to this objective
-      frameworkMappings = builtins.map (framework:
-        {
-          frameworkId = framework.id;
-          frameworkName = framework.name;
-          controls = builtins.filter (control:
-            builtins.elem objectiveId (control.canonicalObjectives or [])
-          ) framework.controls;
-        }
-      ) frameworks;
-    in builtins.filter (fm: builtins.length fm.controls > 0) frameworkMappings;
+      frameworkMappings = builtins.map
+        (framework:
+          {
+            frameworkId = framework.id;
+            frameworkName = framework.name;
+            controls = builtins.filter
+              (control:
+                builtins.elem objectiveId (control.canonicalObjectives or [ ])
+              )
+              framework.controls;
+          }
+        )
+        frameworks;
+    in
+    builtins.filter (fm: builtins.length fm.controls > 0) frameworkMappings;
 }

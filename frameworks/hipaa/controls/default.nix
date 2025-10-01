@@ -41,10 +41,10 @@ let
         technicalControlTypes.AUTHORIZATION
       ];
       mappings = {
-        soc2 = ["CC6.1" "CC6.2"];
-        fedramp = ["AC-2" "AC-11"];
-        iso27001 = ["A.9.2.1" "A.9.4.2"];
-        pcidss = ["7.1" "8.1"];
+        soc2 = [ "CC6.1" "CC6.2" ];
+        fedramp = [ "AC-2" "AC-11" ];
+        iso27001 = [ "A.9.2.1" "A.9.4.2" ];
+        pcidss = [ "7.1" "8.1" ];
       };
       testingProcedures = [
         "Verify unique user identification"
@@ -63,7 +63,7 @@ let
         "Sessions timeout after inactivity"
       ];
       metadata = {
-        tags = ["technical" "required" "access-control"];
+        tags = [ "technical" "required" "access-control" ];
         automatable = true;
         priority = "critical";
         addressable = false; # Required control
@@ -100,10 +100,10 @@ let
         technicalControlTypes.ACCESS_CONTROL
       ];
       mappings = {
-        soc2 = ["CC6.2"];
-        fedramp = ["IA-2" "IA-4"];
-        iso27001 = ["A.9.2.1"];
-        pcidss = ["8.1"];
+        soc2 = [ "CC6.2" ];
+        fedramp = [ "IA-2" "IA-4" ];
+        iso27001 = [ "A.9.2.1" ];
+        pcidss = [ "8.1" ];
       };
       testingProcedures = [
         "Review user account list for duplicates"
@@ -115,7 +115,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "required" "authentication"];
+        tags = [ "technical" "required" "authentication" ];
         automatable = true;
         addressable = false;
       };
@@ -153,9 +153,9 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        soc2 = ["CC6.1"];
-        fedramp = ["AC-2"];
-        iso27001 = ["A.9.2.1"];
+        soc2 = [ "CC6.1" ];
+        fedramp = [ "AC-2" ];
+        iso27001 = [ "A.9.2.1" ];
       };
       testingProcedures = [
         "Review emergency access documentation"
@@ -167,7 +167,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["administrative" "required" "incident-response"];
+        tags = [ "administrative" "required" "incident-response" ];
         automatable = false;
         addressable = false;
       };
@@ -209,10 +209,10 @@ let
         technicalControlTypes.DATA_PROTECTION
       ];
       mappings = {
-        soc2 = ["CC7.1" "CC7.2"];
-        fedramp = ["AU-2" "AU-3" "AU-6"];
-        iso27001 = ["A.12.4.1"];
-        pcidss = ["10.1" "10.2" "10.3"];
+        soc2 = [ "CC7.1" "CC7.2" ];
+        fedramp = [ "AU-2" "AU-3" "AU-6" ];
+        iso27001 = [ "A.12.4.1" ];
+        pcidss = [ "10.1" "10.2" "10.3" ];
       };
       testingProcedures = [
         "Verify logging coverage for ePHI access"
@@ -231,7 +231,7 @@ let
         "Logs are reviewed regularly"
       ];
       metadata = {
-        tags = ["technical" "required" "logging"];
+        tags = [ "technical" "required" "logging" ];
         automatable = true;
         priority = "critical";
         addressable = false;
@@ -271,10 +271,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        soc2 = ["CC6.6"];
-        fedramp = ["SI-7"];
-        iso27001 = ["A.12.2.1"];
-        pcidss = ["11.5"];
+        soc2 = [ "CC6.6" ];
+        fedramp = [ "SI-7" ];
+        iso27001 = [ "A.12.2.1" ];
+        pcidss = [ "11.5" ];
       };
       testingProcedures = [
         "Test integrity verification mechanisms"
@@ -286,7 +286,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["technical" "addressable" "data-protection"];
+        tags = [ "technical" "addressable" "data-protection" ];
         automatable = true;
         addressable = true;
       };
@@ -325,10 +325,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        soc2 = ["CC6.1"];
-        fedramp = ["IA-2" "IA-5"];
-        iso27001 = ["A.9.2.1" "A.9.4.2"];
-        pcidss = ["8.2" "8.3"];
+        soc2 = [ "CC6.1" ];
+        fedramp = [ "IA-2" "IA-5" ];
+        iso27001 = [ "A.9.2.1" "A.9.4.2" ];
+        pcidss = [ "8.2" "8.3" ];
       };
       testingProcedures = [
         "Verify MFA implementation"
@@ -346,7 +346,7 @@ let
         "Authentication failures are logged"
       ];
       metadata = {
-        tags = ["technical" "required" "authentication"];
+        tags = [ "technical" "required" "authentication" ];
         automatable = true;
         priority = "critical";
         addressable = false;
@@ -387,10 +387,10 @@ let
         technicalControlTypes.NETWORK_SECURITY
       ];
       mappings = {
-        soc2 = ["CC6.7"];
-        fedramp = ["SC-8" "SC-13"];
-        iso27001 = ["A.13.2.1"];
-        pcidss = ["4.1" "4.2"];
+        soc2 = [ "CC6.7" ];
+        fedramp = [ "SC-8" "SC-13" ];
+        iso27001 = [ "A.13.2.1" ];
+        pcidss = [ "4.1" "4.2" ];
       };
       testingProcedures = [
         "Scan for TLS configuration"
@@ -407,7 +407,7 @@ let
         "Weak ciphers are disabled"
       ];
       metadata = {
-        tags = ["technical" "addressable" "encryption"];
+        tags = [ "technical" "addressable" "encryption" ];
         automatable = true;
         priority = "critical";
         addressable = true;
@@ -452,10 +452,10 @@ let
         technicalControlTypes.INCIDENT_RESPONSE
       ];
       mappings = {
-        soc2 = ["CC7.1" "CC7.2"];
-        fedramp = ["AU-6" "SI-4"];
-        iso27001 = ["A.12.4.1"];
-        pcidss = ["10.6"];
+        soc2 = [ "CC7.1" "CC7.2" ];
+        fedramp = [ "AU-6" "SI-4" ];
+        iso27001 = [ "A.12.4.1" ];
+        pcidss = [ "10.6" ];
       };
       testingProcedures = [
         "Review log analysis procedures"
@@ -467,7 +467,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["administrative" "required" "monitoring"];
+        tags = [ "administrative" "required" "monitoring" ];
         automatable = true;
         addressable = false;
       };
@@ -503,10 +503,10 @@ let
         technicalControlTypes.ACCESS_CONTROL
       ];
       mappings = {
-        soc2 = ["CC6.2"];
-        fedramp = ["AC-2"];
-        iso27001 = ["A.9.2.1"];
-        pcidss = ["7.1"];
+        soc2 = [ "CC6.2" ];
+        fedramp = [ "AC-2" ];
+        iso27001 = [ "A.9.2.1" ];
+        pcidss = [ "7.1" ];
       };
       testingProcedures = [
         "Review access authorization process"
@@ -517,7 +517,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["administrative" "addressable"];
+        tags = [ "administrative" "addressable" ];
         automatable = true;
         addressable = true;
       };
@@ -556,10 +556,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        soc2 = ["CC6.3"];
-        fedramp = ["AC-2"];
-        iso27001 = ["A.9.2.6"];
-        pcidss = ["8.1.3"];
+        soc2 = [ "CC6.3" ];
+        fedramp = [ "AC-2" ];
+        iso27001 = [ "A.9.2.6" ];
+        pcidss = [ "8.1.3" ];
       };
       testingProcedures = [
         "Test automated deprovisioning"
@@ -571,7 +571,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["administrative" "addressable" "access-control"];
+        tags = [ "administrative" "addressable" "access-control" ];
         automatable = true;
         addressable = true;
         priority = "high";
@@ -612,18 +612,18 @@ let
         technicalControlTypes.CONFIGURATION_MANAGEMENT
       ];
       mappings = {
-        soc2 = ["CC8.1"];
-        fedramp = ["PL-1"];
-        iso27001 = ["A.5.1"];
+        soc2 = [ "CC8.1" ];
+        fedramp = [ "PL-1" ];
+        iso27001 = [ "A.5.1" ];
       };
       testingProcedures = [
         "Review policy documents"
         "Verify policy distribution"
         "Check acknowledgment records"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["administrative" "required" "documentation"];
+        tags = [ "administrative" "required" "documentation" ];
         automatable = false;
         addressable = false;
       };

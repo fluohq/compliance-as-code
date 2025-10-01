@@ -38,7 +38,7 @@ let
         technicalControlTypes.CONFIGURATION_MANAGEMENT
       ];
       mappings = {
-        iso27001 = ["A.8.32"];
+        iso27001 = [ "A.8.32" ];
       };
       testingProcedures = [
         "Review data inventory"
@@ -49,7 +49,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["administrative" "data-protection"];
+        tags = [ "administrative" "data-protection" ];
         automatable = true;
         priority = "high";
       };
@@ -88,10 +88,10 @@ let
         technicalControlTypes.DATA_PROTECTION
       ];
       mappings = {
-        soc2 = ["CC6.6"];
-        hipaa = ["164.312(a)(2)(iv)"];
-        fedramp = ["SC-28"];
-        iso27001 = ["A.10.1.1"];
+        soc2 = [ "CC6.6" ];
+        hipaa = [ "164.312(a)(2)(iv)" ];
+        fedramp = [ "SC-28" ];
+        iso27001 = [ "A.10.1.1" ];
       };
       testingProcedures = [
         "Verify encryption at rest"
@@ -108,7 +108,7 @@ let
         "Keys are securely stored"
       ];
       metadata = {
-        tags = ["technical" "encryption"];
+        tags = [ "technical" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -143,7 +143,7 @@ let
         technicalControlTypes.DATA_PROTECTION
       ];
       mappings = {
-        iso27001 = ["A.10.1.1"];
+        iso27001 = [ "A.10.1.1" ];
       };
       testingProcedures = [
         "Review UI for PAN masking"
@@ -154,7 +154,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["technical" "data-protection"];
+        tags = [ "technical" "data-protection" ];
         automatable = true;
         priority = "high";
       };
@@ -192,17 +192,17 @@ let
         technicalControlTypes.DATA_PROTECTION
       ];
       mappings = {
-        iso27001 = ["A.10.1.2"];
-        fedramp = ["SC-13"];
+        iso27001 = [ "A.10.1.2" ];
+        fedramp = [ "SC-13" ];
       };
       testingProcedures = [
         "Review key management procedures"
         "Verify key storage security"
         "Test key rotation"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["technical" "encryption"];
+        tags = [ "technical" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -246,10 +246,10 @@ let
         technicalControlTypes.NETWORK_SECURITY
       ];
       mappings = {
-        soc2 = ["CC6.7"];
-        hipaa = ["164.312(e)(1)"];
-        fedramp = ["SC-8"];
-        iso27001 = ["A.13.2.1"];
+        soc2 = [ "CC6.7" ];
+        hipaa = [ "164.312(e)(1)" ];
+        fedramp = [ "SC-8" ];
+        iso27001 = [ "A.13.2.1" ];
       };
       testingProcedures = [
         "Scan for TLS version"
@@ -265,7 +265,7 @@ let
         "Certificates are valid"
       ];
       metadata = {
-        tags = ["technical" "encryption"];
+        tags = [ "technical" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -302,10 +302,10 @@ let
         technicalControlTypes.NETWORK_SECURITY
       ];
       mappings = {
-        soc2 = ["CC6.7"];
-        hipaa = ["164.312(e)(1)"];
-        fedramp = ["SC-8"];
-        iso27001 = ["A.13.2.1"];
+        soc2 = [ "CC6.7" ];
+        hipaa = [ "164.312(e)(1)" ];
+        fedramp = [ "SC-8" ];
+        iso27001 = [ "A.13.2.1" ];
       };
       testingProcedures = [
         "Test all PAN transmission paths"
@@ -317,7 +317,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "encryption"];
+        tags = [ "technical" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -359,10 +359,10 @@ let
         technicalControlTypes.AUTHORIZATION
       ];
       mappings = {
-        soc2 = ["CC6.1"];
-        hipaa = ["164.312(a)(1)"];
-        fedramp = ["AC-3"];
-        iso27001 = ["A.9.2.2" "A.9.4.1"];
+        soc2 = [ "CC6.1" ];
+        hipaa = [ "164.312(a)(1)" ];
+        fedramp = [ "AC-3" ];
+        iso27001 = [ "A.9.2.2" "A.9.4.1" ];
       };
       testingProcedures = [
         "Review access control policies"
@@ -374,7 +374,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["administrative" "access-control"];
+        tags = [ "administrative" "access-control" ];
         automatable = true;
         priority = "high";
       };
@@ -415,10 +415,10 @@ let
         technicalControlTypes.ACCESS_CONTROL
       ];
       mappings = {
-        soc2 = ["CC6.1" "CC6.2"];
-        hipaa = ["164.312(a)(2)(i)" "164.312(d)"];
-        fedramp = ["IA-2" "AC-2"];
-        iso27001 = ["A.9.2.1"];
+        soc2 = [ "CC6.1" "CC6.2" ];
+        hipaa = [ "164.312(a)(2)(i)" "164.312(d)" ];
+        fedramp = [ "IA-2" "AC-2" ];
+        iso27001 = [ "A.9.2.1" ];
       };
       testingProcedures = [
         "Verify unique user IDs"
@@ -435,7 +435,7 @@ let
         "No shared accounts exist"
       ];
       metadata = {
-        tags = ["technical" "authentication"];
+        tags = [ "technical" "authentication" ];
         automatable = true;
         priority = "critical";
       };
@@ -472,10 +472,10 @@ let
         technicalControlTypes.AUTHENTICATION
       ];
       mappings = {
-        soc2 = ["CC6.1"];
-        hipaa = ["164.312(d)"];
-        fedramp = ["IA-2" "IA-5"];
-        iso27001 = ["A.9.4.2" "A.9.4.3"];
+        soc2 = [ "CC6.1" ];
+        hipaa = [ "164.312(d)" ];
+        fedramp = [ "IA-2" "IA-5" ];
+        iso27001 = [ "A.9.4.2" "A.9.4.3" ];
       };
       testingProcedures = [
         "Test MFA enforcement"
@@ -488,7 +488,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "authentication"];
+        tags = [ "technical" "authentication" ];
         automatable = true;
         priority = "critical";
       };
@@ -524,10 +524,10 @@ let
         technicalControlTypes.ACCESS_CONTROL
       ];
       mappings = {
-        soc2 = ["CC6.3"];
-        hipaa = ["164.308(a)(3)(ii)(C)"];
-        fedramp = ["AC-2"];
-        iso27001 = ["A.9.2.6"];
+        soc2 = [ "CC6.3" ];
+        hipaa = [ "164.308(a)(3)(ii)(C)" ];
+        fedramp = [ "AC-2" ];
+        iso27001 = [ "A.9.2.6" ];
       };
       testingProcedures = [
         "Test automated deprovisioning"
@@ -539,7 +539,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "access-control"];
+        tags = [ "technical" "access-control" ];
         automatable = true;
         priority = "high";
       };
@@ -575,9 +575,9 @@ let
         technicalControlTypes.ACCESS_CONTROL
       ];
       mappings = {
-        soc2 = ["CC6.3"];
-        fedramp = ["AC-2"];
-        iso27001 = ["A.9.2.6"];
+        soc2 = [ "CC6.3" ];
+        fedramp = [ "AC-2" ];
+        iso27001 = [ "A.9.2.6" ];
       };
       testingProcedures = [
         "Review inactive account detection"
@@ -588,7 +588,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "access-control"];
+        tags = [ "technical" "access-control" ];
         automatable = true;
       };
     };
@@ -621,8 +621,8 @@ let
         technicalControlTypes.AUTHENTICATION
       ];
       mappings = {
-        fedramp = ["IA-5"];
-        iso27001 = ["A.9.4.3"];
+        fedramp = [ "IA-5" ];
+        iso27001 = [ "A.9.4.3" ];
       };
       testingProcedures = [
         "Test password complexity enforcement"
@@ -633,7 +633,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "authentication"];
+        tags = [ "technical" "authentication" ];
         automatable = true;
         priority = "high";
       };
@@ -669,8 +669,8 @@ let
         technicalControlTypes.AUTHENTICATION
       ];
       mappings = {
-        fedramp = ["IA-5"];
-        iso27001 = ["A.9.4.3"];
+        fedramp = [ "IA-5" ];
+        iso27001 = [ "A.9.4.3" ];
       };
       testingProcedures = [
         "Test password expiration"
@@ -681,7 +681,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "authentication"];
+        tags = [ "technical" "authentication" ];
         automatable = true;
       };
     };
@@ -721,10 +721,10 @@ let
         technicalControlTypes.MONITORING
       ];
       mappings = {
-        soc2 = ["CC7.1"];
-        hipaa = ["164.312(b)"];
-        fedramp = ["AU-2"];
-        iso27001 = ["A.12.4.1"];
+        soc2 = [ "CC7.1" ];
+        hipaa = [ "164.312(b)" ];
+        fedramp = [ "AU-2" ];
+        iso27001 = [ "A.12.4.1" ];
       };
       testingProcedures = [
         "Review logging policies"
@@ -736,7 +736,7 @@ let
         patterns.ASPECT
       ];
       metadata = {
-        tags = ["administrative" "logging"];
+        tags = [ "administrative" "logging" ];
         automatable = true;
         priority = "high";
       };
@@ -773,10 +773,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        soc2 = ["CC7.1"];
-        hipaa = ["164.312(b)"];
-        fedramp = ["AU-2" "AU-3"];
-        iso27001 = ["A.12.4.1"];
+        soc2 = [ "CC7.1" ];
+        hipaa = [ "164.312(b)" ];
+        fedramp = [ "AU-2" "AU-3" ];
+        iso27001 = [ "A.12.4.1" ];
       };
       testingProcedures = [
         "Review log content requirements"
@@ -788,7 +788,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["technical" "logging"];
+        tags = [ "technical" "logging" ];
         automatable = true;
         priority = "high";
       };
@@ -824,10 +824,10 @@ let
         technicalControlTypes.LOGGING
       ];
       mappings = {
-        soc2 = ["CC7.1"];
-        hipaa = ["164.312(b)"];
-        fedramp = ["AU-3"];
-        iso27001 = ["A.12.4.1"];
+        soc2 = [ "CC7.1" ];
+        hipaa = [ "164.312(b)" ];
+        fedramp = [ "AU-3" ];
+        iso27001 = [ "A.12.4.1" ];
       };
       testingProcedures = [
         "Review sample audit records"
@@ -838,7 +838,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "logging"];
+        tags = [ "technical" "logging" ];
         automatable = true;
         priority = "high";
       };
@@ -876,10 +876,10 @@ let
         technicalControlTypes.INCIDENT_RESPONSE
       ];
       mappings = {
-        soc2 = ["CC7.2"];
-        hipaa = ["164.308(a)(1)(ii)(D)"];
-        fedramp = ["AU-6"];
-        iso27001 = ["A.12.4.1"];
+        soc2 = [ "CC7.2" ];
+        hipaa = [ "164.308(a)(1)(ii)(D)" ];
+        fedramp = [ "AU-6" ];
+        iso27001 = [ "A.12.4.1" ];
       };
       testingProcedures = [
         "Review log analysis procedures"
@@ -890,7 +890,7 @@ let
         patterns.ASPECT
       ];
       metadata = {
-        tags = ["administrative" "monitoring"];
+        tags = [ "administrative" "monitoring" ];
         automatable = true;
       };
     };
@@ -929,10 +929,10 @@ let
         technicalControlTypes.INCIDENT_RESPONSE
       ];
       mappings = {
-        soc2 = ["CC7.1" "CC7.2"];
-        hipaa = ["164.308(a)(1)(ii)(D)"];
-        fedramp = ["SI-4"];
-        iso27001 = ["A.12.4.1"];
+        soc2 = [ "CC7.1" "CC7.2" ];
+        hipaa = [ "164.308(a)(1)(ii)(D)" ];
+        fedramp = [ "SI-4" ];
+        iso27001 = [ "A.12.4.1" ];
       };
       testingProcedures = [
         "Review IDS/IPS configuration"
@@ -943,7 +943,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "monitoring"];
+        tags = [ "technical" "monitoring" ];
         automatable = true;
         priority = "high";
       };
@@ -980,16 +980,16 @@ let
         technicalControlTypes.VULNERABILITY_MANAGEMENT
       ];
       mappings = {
-        iso27001 = ["A.12.2.1"];
+        iso27001 = [ "A.12.2.1" ];
       };
       testingProcedures = [
         "Verify anti-malware deployment"
         "Review scan results"
         "Test detection capabilities"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["technical" "security"];
+        tags = [ "technical" "security" ];
         automatable = true;
       };
     };
@@ -1028,10 +1028,10 @@ let
         technicalControlTypes.CONFIGURATION_MANAGEMENT
       ];
       mappings = {
-        soc2 = ["CC8.1"];
-        hipaa = ["164.308(a)(8)"];
-        fedramp = ["CM-3"];
-        iso27001 = ["A.12.1.2" "A.14.2.2"];
+        soc2 = [ "CC8.1" ];
+        hipaa = [ "164.308(a)(8)" ];
+        fedramp = [ "CM-3" ];
+        iso27001 = [ "A.12.1.2" "A.14.2.2" ];
       };
       testingProcedures = [
         "Review change control process"
@@ -1042,7 +1042,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["administrative" "change-management"];
+        tags = [ "administrative" "change-management" ];
         automatable = true;
       };
     };
@@ -1051,7 +1051,7 @@ in
 
 {
   inherit dataProtection transmissionSecurity accessControl authentication
-          logging testing secureDevelopment;
+    logging testing secureDevelopment;
 
   # All PCI-DSS controls as a flat list
   allControls =

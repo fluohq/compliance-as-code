@@ -49,7 +49,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["administrative" "data-protection"];
+        tags = [ "administrative" "data-protection" ];
         automatable = true;
         priority = "critical";
       };
@@ -101,7 +101,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "data-protection"];
+        tags = [ "technical" "data-protection" ];
         automatable = true;
         priority = "high";
       };
@@ -149,7 +149,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["administrative" "data-protection"];
+        tags = [ "administrative" "data-protection" ];
         automatable = true;
         priority = "high";
       };
@@ -200,7 +200,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "data-protection"];
+        tags = [ "technical" "data-protection" ];
         automatable = true;
       };
     };
@@ -256,7 +256,7 @@ let
         "Retention periods are documented"
       ];
       metadata = {
-        tags = ["technical" "data-protection"];
+        tags = [ "technical" "data-protection" ];
         automatable = true;
         priority = "high";
       };
@@ -319,7 +319,7 @@ let
         "Access controls are enforced"
       ];
       metadata = {
-        tags = ["technical" "encryption" "access-control"];
+        tags = [ "technical" "encryption" "access-control" ];
         automatable = true;
         priority = "critical";
       };
@@ -360,7 +360,7 @@ let
         technicalControlTypes.ACCESS_CONTROL
         technicalControlTypes.LOGGING
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Review legal basis documentation"
         "Verify consent mechanisms"
@@ -371,7 +371,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["administrative" "legal"];
+        tags = [ "administrative" "legal" ];
         automatable = true;
         priority = "critical";
       };
@@ -408,16 +408,16 @@ let
         Track and respond to information requests within 30 days.
       '';
       riskLevel = riskLevels.MEDIUM;
-      technicalControls = [];
-      canonicalObjectives = [];
+      technicalControls = [ ];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Review privacy notices for clarity"
         "Test accessibility of privacy information"
         "Verify response timeframes"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["administrative" "transparency"];
+        tags = [ "administrative" "transparency" ];
         automatable = false;
       };
     };
@@ -458,7 +458,7 @@ let
         technicalControlTypes.ACCESS_CONTROL
         technicalControlTypes.AUTHENTICATION
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Test data access request process"
         "Verify identity verification"
@@ -469,7 +469,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "data-subject-rights"];
+        tags = [ "technical" "data-subject-rights" ];
         automatable = true;
         priority = "high";
       };
@@ -507,7 +507,7 @@ let
         technicalControlTypes.DATA_PROTECTION
         technicalControlTypes.LOGGING
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Test rectification process"
         "Verify notification to third parties"
@@ -517,7 +517,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "data-subject-rights"];
+        tags = [ "technical" "data-subject-rights" ];
         automatable = true;
       };
     };
@@ -573,7 +573,7 @@ let
         "Erasure is logged"
       ];
       metadata = {
-        tags = ["technical" "data-subject-rights"];
+        tags = [ "technical" "data-subject-rights" ];
         automatable = true;
         priority = "high";
       };
@@ -610,7 +610,7 @@ let
         technicalControlTypes.ACCESS_CONTROL
         technicalControlTypes.DATA_PROTECTION
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Test restriction mechanism"
         "Verify processing prevention"
@@ -620,7 +620,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "data-subject-rights"];
+        tags = [ "technical" "data-subject-rights" ];
         automatable = true;
       };
     };
@@ -656,15 +656,15 @@ let
       technicalControls = [
         technicalControlTypes.DATA_PROTECTION
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Test data export formats"
         "Verify data completeness"
         "Test direct transmission"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["technical" "data-subject-rights"];
+        tags = [ "technical" "data-subject-rights" ];
         automatable = true;
       };
     };
@@ -702,7 +702,7 @@ let
         technicalControlTypes.ACCESS_CONTROL
         technicalControlTypes.DATA_PROTECTION
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Test objection process"
         "Verify processing cessation"
@@ -712,7 +712,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "data-subject-rights"];
+        tags = [ "technical" "data-subject-rights" ];
         automatable = true;
       };
     };
@@ -765,7 +765,7 @@ let
         patterns.POLICY
       ];
       metadata = {
-        tags = ["technical" "data-protection"];
+        tags = [ "technical" "data-protection" ];
         automatable = true;
         priority = "high";
       };
@@ -830,7 +830,7 @@ let
         "Backup procedures are in place"
       ];
       metadata = {
-        tags = ["technical" "security" "encryption"];
+        tags = [ "technical" "security" "encryption" ];
         automatable = true;
         priority = "critical";
       };
@@ -885,7 +885,7 @@ let
         patterns.INTERCEPTOR
       ];
       metadata = {
-        tags = ["technical" "incident-response"];
+        tags = [ "technical" "incident-response" ];
         automatable = true;
         priority = "critical";
       };
@@ -923,15 +923,15 @@ let
       technicalControls = [
         technicalControlTypes.INCIDENT_RESPONSE
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Test risk assessment process"
         "Review notification templates"
         "Test data subject notification system"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["administrative" "incident-response"];
+        tags = [ "administrative" "incident-response" ];
         automatable = true;
         priority = "high";
       };
@@ -969,16 +969,16 @@ let
         Document DPIA outcomes and mitigations.
       '';
       riskLevel = riskLevels.HIGH;
-      technicalControls = [];
-      canonicalObjectives = [];
+      technicalControls = [ ];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Review DPIA procedures"
         "Verify DPIA completion for high-risk processing"
         "Review risk mitigation measures"
       ];
-      patterns = [];
+      patterns = [ ];
       metadata = {
-        tags = ["administrative" "risk-assessment"];
+        tags = [ "administrative" "risk-assessment" ];
         automatable = false;
         priority = "high";
       };
@@ -1019,7 +1019,7 @@ let
         technicalControlTypes.LOGGING
         technicalControlTypes.CONFIGURATION_MANAGEMENT
       ];
-      canonicalObjectives = [];
+      canonicalObjectives = [ ];
       testingProcedures = [
         "Review ROPA completeness"
         "Verify ROPA accuracy"
@@ -1029,7 +1029,7 @@ let
         patterns.DECORATOR
       ];
       metadata = {
-        tags = ["administrative" "accountability"];
+        tags = [ "administrative" "accountability" ];
         automatable = true;
         priority = "high";
       };
@@ -1039,7 +1039,7 @@ in
 
 {
   inherit principles lawfulness transparency dataSubjectRights dataProtection
-          security breach assessment records;
+    security breach assessment records;
 
   # All GDPR controls as a flat list
   allControls =
