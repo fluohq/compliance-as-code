@@ -74,6 +74,7 @@
               nix-tree
               jq
               act
+              cachix
             ];
 
             shellHook = ''
@@ -85,6 +86,7 @@
               echo "  nix flake check             - Run all checks"
               echo "  nix run .#list-frameworks   - List all frameworks"
               echo "  nix run .#test-ci           - Test CI locally with act"
+              echo "  nix run .#push-cachix       - Build and push to Cachix"
               echo ""
               echo "Frameworks: GDPR, SOC 2, HIPAA, FedRAMP, ISO 27001, PCI-DSS"
               echo "Languages: Java, TypeScript, Python, Go"
@@ -185,6 +187,36 @@
             ''}";
             meta = {
               description = "Test CI workflows locally with act";
+            };
+          };
+
+          # Push to Cachix manually
+          push-cachix = {
+            type = "app";
+            program = "${pkgs.writeShellScript "push-cachix" ''
+              echo "Building and pushing all generators to Cachix..."
+              echo ""
+
+              cd frameworks/generators || exit 1
+
+              echo "Building Java generators..."
+              nix build .#all-java --json | ${pkgs.jq}/bin/jq -r '.[].outputs.out' | ${pkgs.cachix}/bin/cachix push fluohq
+
+              echo "Building TypeScript generators..."
+              nix build .#all-typescript --json | ${pkgs.jq}/bin/jq -r '.[].outputs.out' | ${pkgs.cachix}/bin/cachix push fluohq
+
+              echo "Building Python generators..."
+              nix build .#all-python --json | ${pkgs.jq}/bin/jq -r '.[].outputs.out' | ${pkgs.cachix}/bin/cachix push fluohq
+
+              echo "Building Go generators..."
+              nix build .#all-go --json | ${pkgs.jq}/bin/jq -r '.[].outputs.out' | ${pkgs.cachix}/bin/cachix push fluohq
+
+              echo ""
+              echo "✓ All generators pushed to Cachix!"
+              echo "Cache: https://fluohq.cachix.org"
+            ''}";
+            meta = {
+              description = "Build and push all generators to Cachix";
             };
           };
 

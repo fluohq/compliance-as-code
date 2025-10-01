@@ -20,17 +20,23 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v13
+        with:
+          name: fluohq
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
       - name: Check Nix formatting
         run: nix run nixpkgs#nixpkgs-fmt -- --check .
 
-      - name: Build sample generators
+      - name: Build and push sample generators
         run: |
           cd frameworks/generators
-          nix build .#java-gdpr --no-link
-          nix build .#ts-gdpr --no-link
-          nix build .#py-gdpr --no-link
-          nix build .#go-gdpr --no-link
-          echo "✓ All sample generators built successfully"
+          nix build .#java-gdpr --print-out-paths | cachix push fluohq
+          nix build .#ts-gdpr --print-out-paths | cachix push fluohq
+          nix build .#py-gdpr --print-out-paths | cachix push fluohq
+          nix build .#go-gdpr --print-out-paths | cachix push fluohq
+          echo "✓ All sample generators built and pushed to Cachix successfully"
 
   build-generators:
     name: Build All Generators
@@ -54,10 +60,10 @@ jobs:
           name: fluohq
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Build all ${{ matrix.language }} generators
+      - name: Build and push all ${{ matrix.language }} generators
         run: |
           cd frameworks/generators
-          nix build .#all-${{ matrix.language }}
+          nix build .#all-${{ matrix.language }} --print-out-paths | cachix push fluohq
 
       - name: List generated files
         run: ls -lah frameworks/generators/result/
