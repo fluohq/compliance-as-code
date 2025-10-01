@@ -100,7 +100,7 @@
           # Go development
           go = pkgs.mkShell {
             buildInputs = with pkgs; [
-              go_1_22
+              go
               gopls
               gotools
             ];
@@ -131,6 +131,9 @@
           list-frameworks = {
             type = "app";
             program = "${generators.apps.${system}.default.program}";
+            meta = {
+              description = "List all compliance frameworks and their controls";
+            };
           };
 
           # Generate all code
@@ -143,6 +146,9 @@
               echo "✓ Location: ./result/"
               ls -lh result/
             ''}";
+            meta = {
+              description = "Generate all compliance code for all languages";
+            };
           };
 
           default = self.apps.${system}.list-frameworks;

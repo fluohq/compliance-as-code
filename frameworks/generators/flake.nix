@@ -1735,8 +1735,11 @@
 
             cd $out/${packageName}
 
-            # Format Go code
-            ${pkgs.go}/bin/gofmt -w *.go
+            # Format Go code (write to temp then copy back for read-only environment)
+            for f in *.go; do
+              ${pkgs.go}/bin/gofmt "$f" > "$f.tmp"
+              mv "$f.tmp" "$f"
+            done
 
             echo ""
             echo "✓ Generated Go compliance code for ${frameworkName}"
