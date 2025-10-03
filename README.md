@@ -209,7 +209,7 @@ Use Nix flakes for deterministic code generation:
 
 ### For Auditors
 
-- **Immutable proof**: Evidence is cryptographically signed spans
+- **Timestamped evidence**: OpenTelemetry spans with precise timestamps and context
 - **Real-time**: No waiting for screenshots or manual logs
 - **Complete context**: Full distributed traces, not isolated events
 - **Queryable**: Filter by framework, control, timerange, user, etc.
@@ -219,7 +219,7 @@ Use Nix flakes for deterministic code generation:
 - **Observable controls**: See which controls are actually running
 - **Continuous monitoring**: Alert on missing or failed evidence
 - **Cross-framework**: Map GDPR to SOC 2 to HIPAA via canonical objectives
-- **Audit trail**: Complete provenance from code to evidence
+- **Traceability**: Link evidence spans back to code that emitted them
 
 ## Philosophy
 
