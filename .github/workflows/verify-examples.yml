@@ -1,0 +1,54 @@
+name: Verify Examples Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-go-examples:
+    name: Verify Go Examples Compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Verify Go HTTP example
+        run: |
+          cd examples/backend/go-http
+          go mod download
+          go build -o server .
+          echo "✓ Go HTTP example compiles"
+
+      - name: Verify Kubernetes admission controller
+        run: |
+          cd examples/infrastructure/kubernetes-admission
+          go mod download
+          go build -o admission-controller ./src/main.go
+          echo "✓ Kubernetes admission controller compiles"
+
+  verify-nix-generators:
+    name: Verify Nix Generators Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Verify sample generator builds
+        run: |
+          cd frameworks/generators
+          nix build .#java-gdpr --print-out-paths
+          nix build .#ts-gdpr --print-out-paths
+          nix build .#py-gdpr --print-out-paths
+          nix build .#go-gdpr --print-out-paths
+          echo "✓ All sample generators build successfully"

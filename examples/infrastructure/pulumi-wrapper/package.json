@@ -1,0 +1,34 @@
+{
+  "name": "@compliance/pulumi-wrapper",
+  "version": "1.0.0",
+  "description": "Pulumi wrapper with compliance evidence for AWS resources",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "deploy": "pulumi up",
+    "destroy": "pulumi destroy"
+  },
+  "keywords": [
+    "pulumi",
+    "compliance",
+    "aws",
+    "gdpr",
+    "soc2",
+    "infrastructure-as-code"
+  ],
+  "dependencies": {
+    "@pulumi/pulumi": "^3.95.0",
+    "@pulumi/aws": "^6.10.0",
+    "@compliance/gdpr": "file:../../../frameworks/generators/ts-gdpr",
+    "@compliance/soc2": "file:../../../frameworks/generators/ts-soc2",
+    "@opentelemetry/api": "^1.7.0",
+    "@opentelemetry/sdk-trace-base": "^1.18.0",
+    "@opentelemetry/sdk-trace-node": "^1.18.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.45.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  }
+}

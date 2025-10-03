@@ -1639,7 +1639,7 @@
 
             # Generate go.mod
             goModFile = pkgs.writeText "go.mod" ''
-              module github.com/fluo/compliance/${packageName}
+              module github.com/fluohq/compliance-as-code/${packageName}
 
               go 1.21
 
@@ -1657,15 +1657,15 @@
 
               ## Installation
 
-              ` ` `bash
+              ```bash
               go get github.com/fluo/compliance/${packageName}
-              ` ` `
+              ```
 
               ## Usage
 
               ### Pattern 1: Context-Based (Recommended)
 
-              ` ` `go
+              ```go
               import (
                   "context"
                   "${packageName} "github.com/fluo/compliance/${packageName}"
@@ -1680,11 +1680,11 @@
                   user := User{Email: email, Password: hash(password)}
                   return userRepo.Save(ctx, user)
               }
-              ` ` `
+              ```
 
               ### Pattern 2: Explicit Span
 
-              ` ` `go
+              ```go
               func deleteUser(ctx context.Context, userId string) error {
                   span := ${packageName}.BeginEvidence(ctx, ${packageName}.${toGoConstant (builtins.elemAt (builtins.map (c: c.id) controls) 1)})
                   defer span.End()
@@ -1695,7 +1695,7 @@
 
                   return nil
               }
-              ` ` `
+              ```
 
               ## Control Constants
 

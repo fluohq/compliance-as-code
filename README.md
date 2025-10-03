@@ -1,6 +1,6 @@
 # Compliance as Code
 
-> **Compliance evidence should be telemetry, not documentation.**
+> **A collection of patterns for treating compliance evidence as observable telemetry.**
 
 ## The Problem
 
@@ -10,7 +10,7 @@ Then the auditor trusts the Word doc more than your code.
 
 **This is backwards.**
 
-## The Solution
+## The Pattern
 
 What if compliance evidence was just... telemetry? What if every method that implements a control automatically emits an immutable span proving it happened?
 
@@ -37,13 +37,15 @@ Query compliance evidence in Grafana like any other telemetry:
 {compliance.framework="gdpr", compliance.control="Art.17"}
 ```
 
-## How It Works
+## Core Concepts
 
-1. **Define controls once** in Nix (canonical source of truth)
-2. **Generate code** for Java, TypeScript, Python, Go
-3. **Annotate your methods** with compliance controls
-4. **Evidence captured automatically** as OpenTelemetry spans
-5. **Query in Grafana** like any other observability data
+This repository demonstrates several key patterns:
+
+1. **Evidence as Telemetry**: Compliance evidence should be OpenTelemetry spans, not Word docs
+2. **Code Generation**: Define controls once, generate code for multiple languages
+3. **Observable Controls**: Every control implementation emits immutable proof
+4. **Declarative Compliance**: Annotate code with what it does, evidence follows automatically
+5. **Query-First Design**: Evidence should be queryable like logs and metrics
 
 ### Evidence-Based Architecture
 
@@ -57,161 +59,207 @@ Methods produce **immutable evidence** as OpenTelemetry spans:
 - **Result**: Success or failure
 - **Side Effects**: What external systems were touched
 
-### Language Support
+### Language Patterns
 
-Different languages, same evidence:
+The same evidence pattern works across languages:
 
 | Language | Pattern | Example |
 |----------|---------|---------|
 | **Java** | Annotations | `@GDPREvidence(control = GDPRControls.Art_51f)` |
 | **TypeScript** | Decorators | `@GDPREvidence({ control: GDPRControls.Art_51f })` |
 | **Python** | Decorators | `@gdpr_evidence(control='Art.5(1)(f)')` |
-| **Go** | Context | `ctx = gdpr.WithEvidence(ctx, gdpr.Art_51f)` |
-| **Nix** | Derivations | `compliance.wrapDerivation { control = "Art.51f"; }` |
+| **Go** | Manual Spans | `span := gdpr.BeginSpan(gdpr.Art_51f)` |
 
-## Supported Frameworks
+## What's Included
 
-| Framework | Controls | Status |
-|-----------|----------|--------|
-| **GDPR** | 22 | ✅ Complete |
-| **SOC 2** | 8 | ✅ Complete |
-| **HIPAA** | 11 | ✅ Complete |
-| **FedRAMP** | 16 | ✅ Complete |
-| **ISO 27001** | 14 | ✅ Complete |
-| **PCI-DSS** | 24 | ✅ Complete |
+This repository contains:
 
-**Total: 95 controls across 6 frameworks**
+1. **Design Patterns**: Examples of treating compliance as observable telemetry
+2. **Control Definitions**: GDPR, SOC 2, HIPAA, FedRAMP, ISO 27001, PCI-DSS (95 controls total)
+3. **Code Generators**: Nix-based generators for Java, TypeScript, Python, Go
+4. **Working Examples**: 15+ examples across backend, data, and infrastructure
 
-## Quick Start
+**This is a reference implementation**, not a production framework. Use these patterns in your own systems.
 
-### 1. Generate Compliance Code
+## Examples
+
+### Backend Frameworks
+
+- **[Go HTTP Server](./examples/backend/go-http/)** - Context-based evidence spans
+- **[Java Spring Boot](./examples/backend/java-spring-boot/)** - Annotation-based evidence
+- **[Java Camel](./examples/backend/java-camel/)** - Route-based evidence emission
+- **[Python FastAPI](./examples/backend/python-fastapi/)** - Async decorator pattern
+- **[Python Django](./examples/backend/python-django/)** - View-based evidence
+- **[TypeScript NestJS](./examples/backend/typescript-nestjs/)** - DI integration
+- **[TypeScript Express](./examples/backend/typescript-express/)** - Middleware pattern
+- **[TypeScript tRPC](./examples/backend/typescript-trpc/)** - Type-safe RPC evidence
+
+### Data Tools
+
+- **[AWS SDK Wrapper](./examples/data/aws-sdk-wrapper/)** - S3/DynamoDB with compliance evidence
+- **[Snowflake Wrapper](./examples/data/snowflake-wrapper/)** - Data warehouse query evidence (placeholder)
+- **[Airtable Wrapper](./examples/data/airtable-wrapper/)** - Low-code tool compliance (placeholder)
+
+### Infrastructure
+
+- **[Kubernetes Admission Controller](./examples/infrastructure/kubernetes-admission/)** - Policy enforcement with evidence
+- **[Terraform Provider](./examples/infrastructure/terraform-provider/)** - IaC compliance (placeholder)
+- **[Pulumi Wrapper](./examples/infrastructure/pulumi-wrapper/)** - Infrastructure evidence emission
+
+See **[examples/](./examples/)** for complete code.
+
+## Using These Patterns
+
+### 1. Study the Examples
+
+Start with the language you use:
 
 ```bash
-# Generate for your language
-nix build github:fluohq/compliance-as-code#java-gdpr
-nix build github:fluohq/compliance-as-code#ts-soc2
-nix build github:fluohq/compliance-as-code#py-hipaa
-nix build github:fluohq/compliance-as-code#go-fedramp
+# View Go example
+cat examples/backend/go-http/main.go
 
-# Copy to your project
-cp -r result/src/main/java/com/compliance/ your-project/src/main/java/
+# View Java example
+cat examples/backend/java-spring-boot/src/main/java/com/example/compliance/UserController.java
 ```
 
-### 2. Annotate Your Code
+### 2. Adapt to Your Stack
+
+These are **patterns**, not a library. Copy the concepts:
 
 ```java
-@GDPREvidence(
-    control = GDPRControls.Art_51f,  // Integrity and Confidentiality
-    evidenceType = EvidenceType.AUDIT_TRAIL
-)
-public User createUser(String email, @Redact String password) {
-    // Evidence captured automatically!
-    return userRepository.save(new User(email, hash(password)));
+// Pattern: Emit evidence before/after business logic
+public User getUser(String userId) {
+    Span span = tracer.spanBuilder("get_user")
+        .setAttribute("compliance.framework", "gdpr")
+        .setAttribute("compliance.control", "Art.15")
+        .setAttribute("userId", userId)
+        .startSpan();
+
+    try {
+        User user = database.findById(userId);
+        span.setAttribute("recordsReturned", 1);
+        return user;
+    } finally {
+        span.end();
+    }
 }
 ```
 
-### 3. Query Evidence in Grafana
+### 3. Query Your Evidence
 
 ```promql
 # All GDPR evidence
 {compliance.framework="gdpr"}
 
-# Critical controls only
-{compliance.framework="gdpr", compliance.risk_level="critical"}
+# Right to erasure operations
+{compliance.control="Art.17"}
 
-# Failed operations
+# Failed compliance operations
 {compliance.result="failure"}
 ```
 
-## Architecture
+## Key Design Patterns
 
-### Graph-Based Control Definitions
+### 1. Evidence as Structured Attributes
 
+Use OpenTelemetry span attributes to make evidence queryable:
+
+```javascript
+span.setAttribute('compliance.framework', 'gdpr');
+span.setAttribute('compliance.control', 'Art.15');
+span.setAttribute('compliance.operation', 'data_access');
+span.setAttribute('input.userId', userId);
+span.setAttribute('output.recordsReturned', records.length);
 ```
-Canonical Taxonomy (Abstract Security Objectives)
-         ↑              ↑              ↑
-         |              |              |
-    SOC 2 Controls   HIPAA Controls   GDPR Controls
-         ↓              ↓              ↓
-    Generated Code (Java, TypeScript, Python, Go, Nix)
-```
 
-Controls point to **canonical security objectives** rather than cross-framework mappings:
+### 2. Control Mapping to Canonical Objectives
+
+Map controls to abstract security objectives rather than cross-framework mappings:
 
 ```nix
-# SOC 2 CC6.1
-canonicalObjectives = ["IAM.AUTHZ.ACCESS.LEAST_PRIVILEGE"];
-
-# HIPAA 164.312(a)(1)
-canonicalObjectives = ["IAM.AUTHZ.ACCESS.LEAST_PRIVILEGE"];
-
-# GDPR Art.32
+# SOC 2 CC6.1, HIPAA 164.312(a)(1), GDPR Art.32 all map to:
 canonicalObjectives = ["IAM.AUTHZ.ACCESS.LEAST_PRIVILEGE"];
 ```
 
-Find all controls implementing the same objective across frameworks.
+This enables querying across frameworks by security objective.
 
-### Supply Chain Security
+### 3. Language-Native Patterns
 
-All dependencies locked with Nix flakes:
+Use each language's idiomatic patterns:
+- **Java**: Annotations with AspectJ
+- **TypeScript**: Decorators with reflect-metadata
+- **Python**: Function decorators
+- **Go**: Explicit span creation (no magic)
 
-- **Reproducible builds**: Same inputs = same outputs
-- **Cryptographic verification**: All dependencies content-addressed
-- **Hermetic execution**: No network access during build
-- **Audit trail**: Full provenance tracking
+### 4. Reproducible Builds
 
-## Examples
+Use Nix flakes for deterministic code generation:
+- Same control definitions always produce same code
+- Cryptographic verification of all dependencies
+- Complete audit trail from definition to generated code
 
-Working examples for common frameworks:
+## Why This Approach?
 
-- **[Java Spring Boot](./examples/backend/java-spring-boot/)** - REST API with @GDPREvidence
-- **[Go HTTP Server](./examples/backend/go-http/)** - Context-based evidence
-- **[Python FastAPI](./examples/backend/python-fastapi/)** - Async decorators
-- **[TypeScript NestJS](./examples/backend/typescript-nestjs/)** - Dependency injection integration
-- **[AWS SDK Wrapper](./examples/data/aws-sdk-wrapper/)** - Cloud service evidence
-- **[Nix Flake](./examples/infrastructure/nix-flake/)** - Build evidence for derivations
+### For Developers
 
-See **[examples/](./examples/)** for more.
+- **No manual evidence**: Code proves what it does automatically
+- **Same tools**: Query compliance like you query logs
+- **Type-safe**: Controls are compile-time constants, not strings
+- **Framework-agnostic**: Works with Spring, FastAPI, Express, etc.
 
-## Documentation
+### For Auditors
 
-- **[Developer Guide](./frameworks/DEVELOPER_GUIDE.md)** - Step-by-step implementation examples
-- **[Generated Code Reference](./frameworks/GENERATED_CODE_REFERENCE.md)** - Complete API documentation
-- **[Evidence Usage](./frameworks/EVIDENCE_USAGE.md)** - Evidence concepts and OpenTelemetry integration
-- **[Architecture](./ARCHITECTURE.md)** - System design and canonical taxonomy
+- **Immutable proof**: Evidence is cryptographically signed spans
+- **Real-time**: No waiting for screenshots or manual logs
+- **Complete context**: Full distributed traces, not isolated events
+- **Queryable**: Filter by framework, control, timerange, user, etc.
+
+### For Security Teams
+
+- **Observable controls**: See which controls are actually running
+- **Continuous monitoring**: Alert on missing or failed evidence
+- **Cross-framework**: Map GDPR to SOC 2 to HIPAA via canonical objectives
+- **Audit trail**: Complete provenance from code to evidence
 
 ## Philosophy
 
-**Compliance should be a byproduct of good software**, not a separate artifact.
+These patterns are based on three principles:
 
-If your code implements a control, it should automatically prove it implemented that control. Evidence should be as observable as logs, metrics, and traces.
+1. **Compliance is a byproduct of good software**, not a separate artifact
+2. **Evidence should be as observable as logs, metrics, and traces**
+3. **Controls should be declared once, proven continuously**
 
-This is compliance as **observable infrastructure**.
+If your code implements a control, it should automatically prove it did so. This is compliance as **observable infrastructure**.
 
 ## Contributing
 
-We're building this in public. Contributions welcome!
+This is an open collection of patterns. Contributions welcome:
+
+- New language examples
+- Additional compliance frameworks
+- Better code generation techniques
+- Real-world usage patterns
 
 See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for guidelines.
 
-### Adding a New Framework
+## Documentation
 
-1. Define controls in `frameworks/{framework}/controls/default.nix`
-2. Add to `frameworks/generators/flake.nix`
-3. Generate code: `nix build .#java-{framework}`
-
-See **[frameworks/README.md](./frameworks/README.md)** for details.
+- **[Examples Directory](./examples/)** - Working code across 15+ frameworks
+- **[Developer Guide](./frameworks/DEVELOPER_GUIDE.md)** - Implementation patterns
+- **[Control Definitions](./frameworks/)** - GDPR, SOC 2, HIPAA, etc.
+- **[Code Generators](./frameworks/generators/)** - Nix-based generation
 
 ## License
 
-Apache 2.0 - Use freely in commercial projects with patent protection.
+Apache 2.0 - Use these patterns freely in commercial projects.
 
-## Acknowledgments
+## Inspiration
 
-Built with:
-- **[Nix](https://nixos.org/)** - Reproducible builds and supply chain security
-- **[OpenTelemetry](https://opentelemetry.io/)** - Evidence emission and collection
+These patterns build on:
+- **[Nix](https://nixos.org/)** - Reproducible builds and deterministic generation
+- **[OpenTelemetry](https://opentelemetry.io/)** - Observable telemetry as evidence
+- Years of manual compliance work that could have been automated
 
 ---
 
-**Compliance is observable infrastructure.**
+**Compliance is observable infrastructure. Evidence is just telemetry.**

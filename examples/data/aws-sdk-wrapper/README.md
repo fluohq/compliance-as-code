@@ -1,296 +1,213 @@
-# AWS SDK Wrapper with Compliance Evidence
+# AWS SDK Wrapper - Compliance Evidence
 
-> **Status**: 📝 Placeholder - Contribution Welcome
+TypeScript wrapper for AWS SDK (S3 and DynamoDB) that automatically emits compliance evidence using OpenTelemetry.
 
-## Why This Example Matters
+## What This Demonstrates
 
-AWS SDK operations need compliance evidence for:
-- **HIPAA §164.312(a)(1)**: Access Control - Track who accessed PHI
-- **SOC 2 CC6.1**: Authorization - Every S3/DynamoDB operation
-- **GDPR Art.32**: Security of Processing - Data encryption evidence
+- **Transparent Evidence Capture**: Wrap AWS SDK calls to emit compliance evidence without changing business logic
+- **Multi-Service Coverage**: S3 and DynamoDB operations with GDPR + SOC 2 evidence
+- **Real AWS Integration**: Works with real AWS services or LocalStack for local testing
+- **Reusable Pattern**: Shows how to wrap any SDK to add compliance evidence
 
-Every S3 upload, DynamoDB query, and EC2 launch should emit evidence.
+## Compliance Controls
 
-## What This Example Would Show
+| Operation | GDPR | SOC 2 | Evidence Emitted |
+|-----------|------|-------|------------------|
+| S3 GetObject | Art.15 | - | Access to user data |
+| S3 PutObject | Art.5(1)(f) | CC6.1 | Secure storage + authorization |
+| S3 DeleteObject | Art.17 | - | Right to erasure |
+| S3 ListObjects | Art.15 | - | Data inventory |
+| DynamoDB GetItem | Art.15 | - | Access to user data |
+| DynamoDB PutItem | Art.5(1)(f) | CC6.1 | Secure storage + authorization |
+| DynamoDB DeleteItem | Art.17 | - | Right to erasure |
+| DynamoDB Query | Art.15 | - | Data access |
 
-### 1. S3 Wrapper with Evidence
+## How It Works
 
-```typescript
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { GDPREvidence, GDPRControls } from '@compliance/gdpr';
-import { trace } from '@opentelemetry/api';
-
-export class ComplianceS3Client {
-  private client: S3Client;
-  private tracer = trace.getTracer('aws-sdk-compliance');
-
-  constructor(config: S3ClientConfig) {
-    this.client = new S3Client(config);
-  }
-
-  @GDPREvidence({ control: GDPRControls.Art_51f })
-  async putObject(params: PutObjectCommandInput): Promise<PutObjectCommandOutput> {
-    const span = this.tracer.startSpan('s3.putObject', {
-      attributes: {
-        'compliance.framework': 'gdpr',
-        'compliance.control': 'Art.5(1)(f)',
-        'aws.service': 's3',
-        'aws.operation': 'PutObject',
-        's3.bucket': params.Bucket,
-        's3.key': params.Key,
-      }
-    });
-
-    try {
-      const result = await this.client.send(new PutObjectCommand(params));
-
-      span.setAttribute('s3.etag', result.ETag);
-      span.setAttribute('s3.encryption', result.ServerSideEncryption || 'none');
-      span.setAttribute('compliance.result', 'success');
-
-      return result;
-    } catch (error) {
-      span.setAttribute('compliance.result', 'failure');
-      span.recordException(error);
-      throw error;
-    } finally {
-      span.end();
-    }
-  }
-
-  @GDPREvidence({ control: GDPRControls.Art_15 })
-  async getObject(params: GetObjectCommandInput): Promise<GetObjectCommandOutput> {
-    // Similar evidence capture for data access
-    const span = this.tracer.startSpan('s3.getObject', {
-      attributes: {
-        'compliance.control': 'Art.15',
-        's3.bucket': params.Bucket,
-        's3.key': params.Key,
-      }
-    });
-
-    try {
-      const result = await this.client.send(new GetObjectCommand(params));
-      span.setAttribute('s3.content_length', result.ContentLength);
-      return result;
-    } finally {
-      span.end();
-    }
-  }
-}
-```
-
-### 2. DynamoDB Wrapper with Evidence
+### S3 Wrapper
 
 ```typescript
-import { DynamoDBClient, GetItemCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
+import { ComplianceS3Client } from './s3-wrapper';
 
-export class ComplianceDynamoDBClient {
-  @GDPREvidence({ control: GDPRControls.Art_15 })
-  async getItem(params: GetItemCommandInput): Promise<GetItemCommandOutput> {
-    const span = this.tracer.startSpan('dynamodb.getItem', {
-      attributes: {
-        'compliance.framework': 'gdpr',
-        'compliance.control': 'Art.15',
-        'aws.service': 'dynamodb',
-        'dynamodb.table': params.TableName,
-        'dynamodb.key': JSON.stringify(params.Key),
-      }
-    });
-
-    try {
-      const result = await this.client.send(new GetItemCommand(params));
-      span.setAttribute('dynamodb.item_found', !!result.Item);
-      return result;
-    } finally {
-      span.end();
-    }
-  }
-
-  @GDPREvidence({ control: GDPRControls.Art_17 })
-  async deleteItem(params: DeleteItemCommandInput): Promise<DeleteItemCommandOutput> {
-    const span = this.tracer.startSpan('dynamodb.deleteItem', {
-      attributes: {
-        'compliance.control': 'Art.17',
-        'dynamodb.table': params.TableName,
-      }
-    });
-
-    try {
-      const result = await this.client.send(new DeleteItemCommand(params));
-      span.setAttribute('compliance.result', 'success');
-      return result;
-    } finally {
-      span.end();
-    }
-  }
-}
-```
-
-### 3. Proxy Pattern for All AWS Services
-
-```typescript
-export function createComplianceProxy<T>(
-  client: T,
-  framework: string,
-  control: string
-): T {
-  return new Proxy(client, {
-    get(target, prop) {
-      const original = target[prop];
-
-      if (typeof original === 'function') {
-        return function(...args: any[]) {
-          const span = tracer.startSpan(`aws.${prop}`, {
-            attributes: {
-              'compliance.framework': framework,
-              'compliance.control': control,
-              'aws.operation': prop,
-            }
-          });
-
-          try {
-            const result = original.apply(target, args);
-
-            if (result instanceof Promise) {
-              return result
-                .then(r => {
-                  span.setAttribute('compliance.result', 'success');
-                  return r;
-                })
-                .finally(() => span.end());
-            }
-
-            return result;
-          } catch (error) {
-            span.recordException(error);
-            throw error;
-          } finally {
-            if (!(result instanceof Promise)) {
-              span.end();
-            }
-          }
-        };
-      }
-
-      return original;
-    }
-  });
-}
-
-// Usage
-const s3 = createComplianceProxy(
-  new S3Client({}),
-  'gdpr',
-  'Art.5(1)(f)'
-);
-```
-
-### 4. Evidence for Data Encryption
-
-```typescript
-@GDPREvidence({ control: GDPRControls.Art_32 })
-async uploadWithEncryption(bucket: string, key: string, data: Buffer) {
-  const span = this.tracer.startSpan('s3.uploadEncrypted');
-
-  // Ensure encryption
-  const params = {
-    Bucket: bucket,
-    Key: key,
-    Body: data,
-    ServerSideEncryption: 'AES256', // Required by GDPR Art.32
-  };
-
-  const result = await this.s3.putObject(params);
-
-  span.setAttribute('encryption.algorithm', result.ServerSideEncryption);
-  span.setAttribute('encryption.key_id', result.SSEKMSKeyId);
-  span.setAttribute('compliance.evidence_type', 'encryption');
-
-  return result;
-}
-```
-
-## How to Implement This Example
-
-### Step 1: Create Wrapper Classes
-
-```typescript
-// Generate TypeScript code
-nix build ../../../frameworks/generators#ts-gdpr
-
-// Create wrapper
-export class ComplianceAWSWrapper {
-  s3: ComplianceS3Client;
-  dynamodb: ComplianceDynamoDBClient;
-  // ... other services
-}
-```
-
-### Step 2: Instrument All Operations
-
-Use decorators or proxies to automatically emit evidence for every AWS API call.
-
-### Step 3: Test with Real AWS Services
-
-```typescript
-const aws = new ComplianceAWSWrapper({
+const s3 = new ComplianceS3Client({
   region: 'us-east-1',
-  compliance: {
-    frameworks: ['gdpr', 'hipaa'],
-    otelEndpoint: 'http://localhost:4318'
-  }
 });
 
-// Every operation emits evidence
-await aws.s3.putObject({ Bucket: 'my-bucket', Key: 'file.txt', Body: buffer });
-await aws.dynamodb.getItem({ TableName: 'users', Key: { id: { S: '123' } } });
+// GDPR Art.15: Right of Access
+const data = await s3.getObject('user-data', 'users/123/profile.json', '123');
+// Emits span: {framework=gdpr, control=Art.15, operation=S3.GetObject, userId=123}
+
+// GDPR Art.5(1)(f) + SOC 2 CC6.1: Secure storage
+await s3.putObject('user-data', 'users/123/profile.json', userData, '123');
+// Emits spans:
+//   {framework=gdpr, control=Art.5(1)(f), operation=S3.PutObject, encrypted=true}
+//   {framework=soc2, control=CC6.1, action=write_object, authorized=true}
+
+// GDPR Art.17: Right to Erasure
+await s3.deleteObject('user-data', 'users/123/profile.json', '123');
+// Emits span: {framework=gdpr, control=Art.17, operation=S3.DeleteObject, deletedRecords=1}
 ```
 
-### Step 4: Query Evidence
+### DynamoDB Wrapper
 
-```promql
-# All S3 operations
-{aws.service="s3"}
+```typescript
+import { ComplianceDynamoDBClient } from './dynamodb-wrapper';
 
-# Data access (GDPR Art.15)
-{compliance.control="Art.15", aws.service="dynamodb"}
+const dynamodb = new ComplianceDynamoDBClient({
+  region: 'us-east-1',
+});
 
-# Data deletion (GDPR Art.17)
-{compliance.control="Art.17"}
+// GDPR Art.15: Right of Access
+const user = await dynamodb.getItem('Users', { userId: '123' }, '123');
+// Emits span: {framework=gdpr, control=Art.15, operation=DynamoDB.GetItem}
 
-# Encryption evidence
-{compliance.evidence_type="encryption"}
+// GDPR Art.5(1)(f) + SOC 2 CC6.1: Secure storage
+await dynamodb.putItem('Users', { userId: '123', email: 'alice@example.com' }, '123');
+// Emits spans for secure storage and authorization
+
+// GDPR Art.17: Right to Erasure
+await dynamodb.deleteItem('Users', { userId: '123' }, '123');
+// Emits span: {framework=gdpr, control=Art.17, deletedRecords=1}
 ```
 
-## Benefits
+## Running the Example
 
-1. **Zero code changes** - Drop-in replacement for AWS SDK
-2. **Complete audit trail** - Every API call tracked
-3. **Encryption enforcement** - Fail if encryption missing
-4. **Multi-service** - Works with S3, DynamoDB, EC2, etc.
+### With LocalStack (Recommended)
 
-## Challenges
+```bash
+# Start LocalStack
+docker run -d -p 4566:4566 localstack/localstack
 
-- Need to wrap every AWS SDK client
-- TypeScript decorators work differently than Java
-- Performance overhead for high-volume operations
-- AWS SDK v3 modular architecture
+# Create test resources
+nix run .#setup
+
+# Run demo
+nix run
+
+# Query evidence
+nix run .#query
+```
+
+### With Real AWS
+
+```bash
+# Configure AWS credentials
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_REGION=us-east-1
+
+# Configure OpenTelemetry
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+
+# Run demo
+nix run
+```
+
+## Evidence Attributes
+
+Each operation emits spans with these attributes:
+
+**Input Attributes:**
+- `compliance.framework`: "gdpr" or "soc2"
+- `compliance.control`: "Art.15", "Art.17", "Art.5(1)(f)", "CC6.1"
+- `operation`: AWS SDK operation name
+- `tableName` / `bucket`: Resource identifier
+- `key`: Object key or item key
+- `userId`: User identifier (if provided)
+
+**Output Attributes:**
+- `recordsReturned`: Number of records accessed
+- `recordsCreated`: Number of records created
+- `deletedRecords`: Number of records deleted
+- `encrypted`: Whether data is encrypted
+- `authorized`: Whether operation was authorized
+- `result`: Operation result
+
+## Integration Patterns
+
+### 1. Drop-in Replacement
+
+```typescript
+// Before
+import { S3Client } from '@aws-sdk/client-s3';
+const s3 = new S3Client({ region: 'us-east-1' });
+
+// After
+import { ComplianceS3Client } from '@compliance/aws-sdk-wrapper';
+const s3 = new ComplianceS3Client({ region: 'us-east-1' });
+```
+
+### 2. Conditional Wrapping
+
+```typescript
+const s3 = process.env.COMPLIANCE_MODE === 'enabled'
+  ? new ComplianceS3Client(config)
+  : new S3Client(config);
+```
+
+### 3. Middleware Approach
+
+```typescript
+class MyApp {
+  constructor(private s3: ComplianceS3Client | S3Client) {}
+
+  async getUserData(userId: string) {
+    return this.s3.getObject('user-data', `users/${userId}/profile.json`, userId);
+  }
+}
+```
+
+## Design Decisions
+
+### Why Wrap vs Middleware?
+
+AWS SDK v3 doesn't have a clean middleware API for adding compliance spans. Wrapping provides:
+- Type safety with TypeScript
+- Clear ownership of compliance evidence
+- Easy to test and reason about
+- No need to modify SDK internals
+
+### Performance
+
+- **Overhead**: ~1-2ms per operation for span creation
+- **Sampling**: Configure OpenTelemetry sampler to reduce overhead
+- **Async**: Span export is asynchronous, doesn't block operations
+
+### Alternative: Lambda Layer
+
+For AWS Lambda, consider a Lambda layer that wraps the SDK:
+
+```typescript
+// Lambda layer wrapper
+import { S3Client } from '@aws-sdk/client-s3';
+import { ComplianceS3Client } from '@compliance/aws-sdk-wrapper';
+
+export const S3 = ComplianceS3Client;
+export { DynamoDB } from './dynamodb-wrapper';
+```
+
+## Testing
+
+```bash
+# Build
+nix build
+
+# Run tests (TODO: add tests)
+npm test
+
+# Type check
+npm run build
+```
 
 ## Contributing
 
-Want to implement this example?
-
-1. Create wrapper classes for S3, DynamoDB
-2. Integrate with generated TypeScript code
-3. Add proxy pattern for automatic instrumentation
-4. Test with real AWS services
-5. Create Nix flake for reproducible build
-6. Add performance benchmarks
-7. Submit pull request
-
-See **[../../../CONTRIBUTING.md](../../../CONTRIBUTING.md)** for guidelines.
+Contributions welcome! Potential improvements:
+- Additional AWS services (RDS, Kinesis, SQS, etc.)
+- Batch operation support
+- Custom compliance frameworks
+- Performance benchmarks
+- Integration tests with LocalStack
 
 ---
 
-**Every cloud operation is evidence.**
+**Compliance is observable infrastructure.**

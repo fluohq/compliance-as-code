@@ -1,21 +1,19 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"sync/atomic"
 
-	"github.com/fluohq/compliance-as-code/gdpr"
-	"github.com/fluohq/compliance-as-code/soc2"
+	"github.com/fluohq/compliance-as-code/examples/go-http/compliance"
 )
 
 var (
-	version     = "1.0.0"
-	requestID   int64
-	inMemoryDB  = make(map[string]*User)
+	version    = "1.0.0"
+	requestID  int64
+	inMemoryDB = make(map[string]*User)
 )
 
 type User struct {
@@ -34,7 +32,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Add compliance evidence to context
-	span := gdpr.BeginEvidence(ctx, gdpr.Art_15)
+	span := compliance.BeginGDPRSpan(ctx, compliance.Art_15)
 	defer span.End()
 
 	userID := r.URL.Query().Get("id")
@@ -68,7 +66,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Add compliance evidence
-	span := gdpr.BeginEvidence(ctx, gdpr.Art_17)
+	span := compliance.BeginGDPRSpan(ctx, compliance.Art_17)
 	defer span.End()
 
 	userID := r.URL.Query().Get("id")
@@ -99,10 +97,10 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Multi-framework evidence
-	gdprSpan := gdpr.BeginEvidence(ctx, gdpr.Art_51f)
+	gdprSpan := compliance.BeginGDPRSpan(ctx, compliance.Art_51f)
 	defer gdprSpan.End()
 
-	soc2Span := soc2.BeginEvidence(ctx, soc2.CC6_1)
+	soc2Span := compliance.BeginSOC2Span(ctx, compliance.CC6_1)
 	defer soc2Span.End()
 
 	var user User
@@ -141,7 +139,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 func listUsers(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	span := gdpr.BeginEvidence(ctx, gdpr.Art_15)
+	span := compliance.BeginGDPRSpan(ctx, compliance.Art_15)
 	defer span.End()
 
 	span.SetInput("http.method", r.Method)

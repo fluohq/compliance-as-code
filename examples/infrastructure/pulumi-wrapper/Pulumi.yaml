@@ -1,0 +1,12 @@
+name: compliance-infrastructure
+runtime: nodejs
+description: Infrastructure with built-in compliance evidence
+
+config:
+  aws:region:
+    description: AWS region for resources
+    default: us-east-1
+
+  compliance:otel-endpoint:
+    description: OpenTelemetry collector endpoint
+    default: http://localhost:4318

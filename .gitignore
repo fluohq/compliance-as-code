@@ -2,3 +2,9 @@
 .actrc
 result
 result-*
+
+# Build artifacts in frameworks/generators
+frameworks/generators/go-*
+frameworks/generators/java-*
+frameworks/generators/ts-*
+frameworks/generators/py-*
