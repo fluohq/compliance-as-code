@@ -8,4 +8,9 @@ frameworks/generators/go-*
 frameworks/generators/java-*
 frameworks/generators/ts-*
 frameworks/generators/py-*
-linkedin-campaign.md
+
+# Compiled Go binaries in examples
+examples/backend/go-http/server
+examples/infrastructure/kubernetes-admission/admission-controller
+
+linkedin*
